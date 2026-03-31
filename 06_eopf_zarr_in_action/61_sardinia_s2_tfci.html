@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>True and False Composites with Sentinel-2</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -69,15 +72,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../06_eopf_zarr_in_action/69_coastal_water_dynamics_s1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-00ccf60c28c3bdf2d57f5131fbf16f11.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-66c9649715f74f1e4324758aa2390964.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -310,7 +312,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../05_zarr_tools/57_rstac_gdalcubes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and <code>gdalcubes</code></span></a>
+  <a href="../05_zarr_tools/55_safe_vs_zarr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Comparisons of SAFE vs Zarr in R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/56_zarr_R_rarr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access EOPF Sentinel Zarr using <code>Rarr</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/57_zarr_R_gdal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access EOPF Sentinel Zarr via GDAL in <code>stars</code> and <code>terra</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/58_rstac_gdalcubes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and <code>gdalcubes</code></span></a>
   </div>
 </li>
       </ul>
@@ -599,7 +616,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px;" class="anchored">Client</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-740ce484-1d26-11f1-a638-eec15a07c5f8</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-04ef327f-2d20-11f1-ae63-8a6b0246e699</p>
         
 <table class="caption-top table table-sm table-striped small">
 <tbody>
@@ -629,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px; margin-top: 0px;" class="anchored">LocalCluster</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">6d4123ae</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">f04b11bf</p>
         
 <table class="caption-top table table-sm table-striped small">
 <tbody>
@@ -659,12 +676,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
         <div style="margin-left: 48px;">
             <h3 style="margin-bottom: 0px;" class="anchored">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-3e905d0c-f004-483f-ace3-d991feb31518</p>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-f2dd3235-e178-4ee5-b1b0-6045c3860ec5</p>
             
 <table class="caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:34237</td>
+<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:40643</td>
 <td style="text-align: left;"><strong>Workers:</strong> 0</td>
 </tr>
 <tr class="even">
@@ -698,19 +715,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:40423</td>
+<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:44801</td>
 <td style="text-align: left;"><strong>Total threads:</strong> 2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:36563/status" target="_blank">http://127.0.0.1:36563/status</a></td>
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:33137/status" target="_blank">http://127.0.0.1:33137/status</a></td>
 <td style="text-align: left;"><strong>Memory:</strong> 7.84 GiB</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:46531</td>
+<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:38051</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-bghdkkx1</td>
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-wvi32cgu</td>
 </tr>
 </tbody>
 </table>
@@ -730,19 +747,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:33343</td>
+<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:37959</td>
 <td style="text-align: left;"><strong>Total threads:</strong> 2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:33679/status" target="_blank">http://127.0.0.1:33679/status</a></td>
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:42197/status" target="_blank">http://127.0.0.1:42197/status</a></td>
 <td style="text-align: left;"><strong>Memory:</strong> 7.84 GiB</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:34025</td>
+<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:43947</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-86lqrbid</td>
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-tozpqv1j</td>
 </tr>
 </tbody>
 </table>
@@ -762,19 +779,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:45213</td>
+<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:35937</td>
 <td style="text-align: left;"><strong>Total threads:</strong> 2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:36105/status" target="_blank">http://127.0.0.1:36105/status</a></td>
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:41909/status" target="_blank">http://127.0.0.1:41909/status</a></td>
 <td style="text-align: left;"><strong>Memory:</strong> 7.84 GiB</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:39417</td>
+<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:39567</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-vwbyx6b5</td>
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-z2j8sptd</td>
 </tr>
 </tbody>
 </table>
@@ -794,19 +811,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table class="caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:35133</td>
+<td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:45417</td>
 <td style="text-align: left;"><strong>Total threads:</strong> 2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:33687/status" target="_blank">http://127.0.0.1:33687/status</a></td>
+<td style="text-align: left;"><strong>Dashboard:</strong> <a href="http://127.0.0.1:37381/status" target="_blank">http://127.0.0.1:37381/status</a></td>
 <td style="text-align: left;"><strong>Memory:</strong> 7.84 GiB</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:37051</td>
+<td style="text-align: left;"><strong>Nanny:</strong> tcp://127.0.0.1:44893</td>
 <td style="text-align: left;"></td>
 </tr>
 <tr class="even">
-<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-3mtw5y3c</td>
+<td colspan="2" style="text-align: left;"><strong>Local directory:</strong> /tmp/dask-scratch-space/worker-yqgw4syj</td>
 </tr>
 </tbody>
 </table>
@@ -1307,7 +1324,7 @@ Total Items Found for Sentinel-2 L2A over Sardinia:   1</code></pre>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total Running Time: '</span>, total_t,<span class="st">' seconds'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Total Running Time:  62.30980944633484  seconds</code></pre>
+<pre><code>Total Running Time:  45.99715256690979  seconds</code></pre>
 </div>
 </div>
 <p>As our plots show, the <strong>True Colour Image</strong> reveals a clear change in the state of the vegetation, with an evident burn scar visible on the ground. The <strong>False Colour Image</strong> also highlights a significant change in the spectral response, which precisely encloses the spot where the fire occurred.<br></p>

@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.27">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>More examples analysing EOPF STAC Zarr data with R</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -65,19 +68,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../05_zarr_tools/57_rstac_gdalcubes.html" rel="next">
+<link href="../05_zarr_tools/55_safe_vs_zarr.html" rel="next">
 <link href="../05_zarr_tools/53_eopf_zarr_r.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-00ccf60c28c3bdf2d57f5131fbf16f11.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-66c9649715f74f1e4324758aa2390964.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -307,7 +309,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../05_zarr_tools/57_rstac_gdalcubes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and <code>gdalcubes</code></span></a>
+  <a href="../05_zarr_tools/55_safe_vs_zarr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Comparisons of SAFE vs Zarr in R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/56_zarr_R_rarr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access EOPF Sentinel Zarr using <code>Rarr</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/57_zarr_R_gdal.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access EOPF Sentinel Zarr via GDAL in <code>stars</code> and <code>terra</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_zarr_tools/58_rstac_gdalcubes.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and <code>gdalcubes</code></span></a>
   </div>
 </li>
       </ul>
@@ -440,10 +457,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#dependencies" id="toc-dependencies" class="nav-link" data-scroll-target="#dependencies">Dependencies</a></li>
   </ul></li>
   <li><a href="#sentinel-1" id="toc-sentinel-1" class="nav-link" data-scroll-target="#sentinel-1">Sentinel-1</a></li>
+  <li><a href="#sentinel-2" id="toc-sentinel-2" class="nav-link" data-scroll-target="#sentinel-2">Sentinel-2</a></li>
   <li><a href="#sentinel-3" id="toc-sentinel-3" class="nav-link" data-scroll-target="#sentinel-3">Sentinel-3</a></li>
   <li><a href="#now-it-is-your-turn" id="toc-now-it-is-your-turn" class="nav-link" data-scroll-target="#now-it-is-your-turn">💪 Now it is your turn</a>
   <ul class="collapse">
   <li><a href="#task-1-visualise-ocean-swell-spectra" id="toc-task-1-visualise-ocean-swell-spectra" class="nav-link" data-scroll-target="#task-1-visualise-ocean-swell-spectra">Task 1: Visualise Ocean Swell spectra</a></li>
+  <li><a href="#task-2-visualise-a-quicklook-composite-for-another-item-or-mission" id="toc-task-2-visualise-a-quicklook-composite-for-another-item-or-mission" class="nav-link" data-scroll-target="#task-2-visualise-a-quicklook-composite-for-another-item-or-mission">Task 2: Visualise a quicklook composite for another item or mission</a></li>
   <li><a href="#task-2-visualise-another-measurement-from-sentinel-3-olci-level-2-lfr" id="toc-task-2-visualise-another-measurement-from-sentinel-3-olci-level-2-lfr" class="nav-link" data-scroll-target="#task-2-visualise-another-measurement-from-sentinel-3-olci-level-2-lfr">Task 2: Visualise another measurement from Sentinel-3 OLCI Level-2 LFR</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
@@ -483,6 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="what-we-will-learn">What we will learn</h2>
 <ul>
 <li>🗂 How to extract measurements, such as Ocean Wind field and GIFAPAR, along with latitude and longitude</li>
+<li>🔎 How to open and visualise quicklook composite images</li>
 <li>📊 How to format, scale, and visualise satellite data on a curvillinear grid</li>
 </ul>
 </section>
@@ -528,19 +548,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The first example looks at <a href="https://stac.browser.user.eopf.eodc.eu/collections/sentinel-1-l2-ocn">Sentinel-1 Level 2 Ocean (OCN) data</a>, which consists of data for oceanographic study, such as monitoring sea surface conditions, detecting oil spills, and studying ocean currents. This example will show how to access and plot Wind Direction data.</p>
 <p>First, select the relevant collection and item from STAC:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>first_item <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>l2_ocn <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collections</span>(<span class="at">collection_id =</span> <span class="st">"sentinel-1-l2-ocn"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">limit =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">feature_id =</span> <span class="st">"S1C_IW_OCN__2SDH_20250921T194014_20250921T194043_004227_008634_1302"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_request</span>()</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>first_item_id <span class="ot">&lt;-</span> first_item[[<span class="st">"features"</span>]][[<span class="dv">1</span>]][[<span class="st">"id"</span>]]</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>l2_ocn <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collections</span>(<span class="at">collection_id =</span> <span class="st">"sentinel-1-l2-ocn"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">feature_id =</span> first_item_id) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_request</span>()</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>l2_ocn</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>l2_ocn</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>###Item
 - id: S1C_IW_OCN__2SDH_20250921T194014_20250921T194043_004227_008634_1302
@@ -631,7 +644,7 @@ $product_metadata
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>owi <span class="ot">&lt;-</span> l2_ocn_store <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_starts</span>(array, <span class="st">"/owi"</span>), <span class="fu">str_detect</span>(array, <span class="st">"measurements"</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>array_id_prefix <span class="ot">&lt;-</span> <span class="fu">str_split</span>(owi[[<span class="st">"array"</span>]], <span class="st">"measurements"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[, <span class="dv">1</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>array_id_prefix <span class="ot">&lt;-</span> <span class="fu">str_split</span>(owi[[<span class="st">"array"</span>]], <span class="st">"measurements"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[, <span class="dv">1</span>] <span class="sc">|&gt;</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>array_id_prefix</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -699,7 +712,7 @@ Endianness: little
 Compressor: blosc</code></pre>
 </div>
 </div>
-<p>Here, we can see that all of the arrays are of the same shape: 166 x 264, with only one chunk. Since these are small, we can read all of the data in at once.</p>
+<p>Here, we can see that all of the arrays are of the same shape: 194 x 254, with only one chunk. Since these are small, we can read all of the data in at once.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>owi_wind_direction <span class="ot">&lt;-</span> owi <span class="sc">|&gt;</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"wind_direction"</span>) <span class="sc">|&gt;</span></span>
@@ -830,17 +843,173 @@ curvilinear grid</code></pre>
 </div>
 </div>
 </section>
-<section id="sentinel-3" class="level2">
-<h2 class="anchored" data-anchor-id="sentinel-3">Sentinel-3</h2>
-<p>Next, we look at an example from the Sentinel-3 mission. The Sentinel-3 mission measures sea-surface topography and land- and sea-surface temperature and colour, in support of environmental and climate monitoring. The <a href="https://stac.browser.user.eopf.eodc.eu/collections/sentinel-3-olci-l2-lfr?.language=en">Sentinel-3 OLCI L2 LFR</a> product provides this data, computed for full resolution.</p>
-<p>Again, we will access a specific item from this collection:</p>
+<section id="sentinel-2" class="level2">
+<h2 class="anchored" data-anchor-id="sentinel-2">Sentinel-2</h2>
+<p>For this example, we return to the <a href="https://stac.browser.user.eopf.eodc.eu/collections/sentinel-2-l2a">Sentinel-2 Level-2A Collection</a>. The Sentinel-2 mission is based on two satellites with 13 spectral bands, with four bands at 10-metre resolution, six bands at 20-metres resolution, and three bands at 60-metre resolution. The mission supports applications for land services, including the monitoring of vegetation, soil and water cover, as well as the observation of inland waterways and coastal areas.</p>
+<p>EOPF Zarr assets include quicklook RGB composites, which are readily viewable representations of the satellite image. We will open the 10-metre resolution quicklook and visualise it. This is available as an asset, so we can access it directly from the STAC item.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>l2_lfr <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collections</span>(<span class="at">collection_id =</span> <span class="st">"sentinel-3-olci-l2-lfr"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">feature_id =</span> <span class="st">"S3B_OL_2_LFR____20260105T103813_20260105T104113_20260106T120044_0179_115_165_2160_ESA_O_NT_003"</span>) <span class="sc">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>s2_l2a_item <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collections</span>(<span class="at">collection_id =</span> <span class="st">"sentinel-2-l2a"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">feature_id =</span> <span class="st">"S2B_MSIL2A_20250530T101559_N0511_R065_T32TPT_20250530T130924"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_request</span>()</span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>l2_lfr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>tci_10m_asset <span class="ot">&lt;-</span> s2_l2a_item <span class="sc">|&gt;</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_select</span>(<span class="at">asset_names =</span> <span class="st">"TCI_10m"</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>tci_10m_url <span class="ot">&lt;-</span> tci_10m_asset <span class="sc">|&gt;</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_url</span>()</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>tci_10m_url <span class="sc">|&gt;</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Type: Array
+Path: https://objects.eodc.eu:443/e05ab01a9d56408d82ac32d69a5aae2a:202505-s02msil2a/30/products/cpm_v256/S2B_MSIL2A_20250530T101559_N0511_R065_T32TPT_20250530T130924.zarr/quality/l2a_quicklook/r10m/tci
+Shape: 3 x 10980 x 10980
+Chunk Shape: 1 x 1830 x 1830
+No. of Chunks: 108 (3 x 6 x 6)
+Data Type: uint8
+Endianness: NA
+Compressor: blosc</code></pre>
+</div>
+</div>
+<p>From the overview, we can see that the quicklook array has three dimensions to it, each of size 10980 x 10980. The three dimensions correspond to red, green, and blue spectral bands (B04, B03, and B02, respectively), since this is an RGB composite. This information is also available by looking at the assets’ bands:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>s2_l2a_item[[<span class="st">"assets"</span>]][[<span class="st">"TCI_10m"</span>]][[<span class="st">"bands"</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(as_tibble)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  name  description    `eo:common_name` `eo:center_wavelength`
+  &lt;chr&gt; &lt;chr&gt;          &lt;chr&gt;                             &lt;dbl&gt;
+1 B04   Red (band 4)   red                               0.665
+2 B03   Green (band 3) green                             0.56 
+3 B02   Blue (band 2)  blue                              0.49 
+# ℹ 1 more variable: `eo:full_width_half_max` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>We can read in a small chunk of the array to get an idea of its shape, using the same indexing process we’ve used before. Note that we want to select <em>all</em> of the bands (the first dimension listed). Rather than writing <code>1:3</code>, we can simply use <code>NULL</code> as the first dimension, indicating to get all data at this dimension. To preview the data, we will just get the first 2 entries (in each dimension) along the three bands.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>tci_10m_preview <span class="ot">&lt;-</span> tci_10m_url <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>(<span class="fu">list</span>(<span class="cn">NULL</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>tci_10m_preview</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , 1
+
+     [,1] [,2]
+[1,]   16   20
+[2,]   31   34
+[3,]   15   19
+
+, , 2
+
+     [,1] [,2]
+[1,]   16   18
+[2,]   30   34
+[3,]   13   20</code></pre>
+</div>
+</div>
+<p>For visualisation purposes, we need the data in a different configuration — note the dimensions of the data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(tci_10m_preview)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 2 2</code></pre>
+</div>
+</div>
+<p>Instead, we need to get it into e.g.&nbsp;2 x 2 x 3, with the <em>third</em> dimension reflecting the number of bands (or layers) To do this, we use the <code>aperm()</code> function to transpose an array, with argument <code>c(2, 3, 1)</code> – moving the second dimension to the first, the third to the second, and the first to the third. Then, we can see that the dimensions of the array are correct:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>tci_10m_preview_perm <span class="ot">&lt;-</span> tci_10m_preview <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aperm</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>tci_10m_preview_perm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , 1
+
+     [,1] [,2]
+[1,]   16   16
+[2,]   20   18
+
+, , 2
+
+     [,1] [,2]
+[1,]   31   30
+[2,]   34   34
+
+, , 3
+
+     [,1] [,2]
+[1,]   15   13
+[2,]   19   20</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(tci_10m_preview_perm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 2 3</code></pre>
+</div>
+</div>
+<p>Let’s read in the full TCI array to visualise it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>tci_10m <span class="ot">&lt;-</span> tci_10m_url <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>tci_10m_perm <span class="ot">&lt;-</span> tci_10m <span class="sc">|&gt;</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aperm</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(tci_10m)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]     3 10980 10980</code></pre>
+</div>
+</div>
+<p>For visualisation, we use <code>terra</code>’s <code>plotRGB()</code> function, first converting the array into a raster object with <code>rast()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>tci_10m_perm <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotRGB</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="54_eopf_zarr_r_examples_files/figure-html/tci-10m-vis-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can do the same with the quicklook at the 60-metre resolution, first accessing the full Zarr store for the product.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>s2_l2a_url <span class="ot">&lt;-</span> s2_l2a_item <span class="sc">|&gt;</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_select</span>(<span class="at">asset_names =</span> <span class="st">"product"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_url</span>()</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>s2_l2a_zarr_store <span class="ot">&lt;-</span> s2_l2a_url <span class="sc">|&gt;</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>(<span class="at">as_data_frame =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">derive_store_array</span>(s2_l2a_url)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then, the full visualisation process can be done in a single step:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>s2_l2a_zarr_store <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"/quality/l2a_quicklook/r60m/tci"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>() <span class="sc">|&gt;</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aperm</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rast</span>() <span class="sc">|&gt;</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotRGB</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="54_eopf_zarr_r_examples_files/figure-html/tci-60m-vis-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sentinel-3" class="level2">
+<h2 class="anchored" data-anchor-id="sentinel-3">Sentinel-3</h2>
+<p>Finally, we look at an example from the Sentinel-3 mission. The Sentinel-3 mission measures sea-surface topography and land- and sea-surface temperature and colour, in support of environmental and climate monitoring. The <a href="https://stac.browser.user.eopf.eodc.eu/collections/sentinel-3-olci-l2-lfr?.language=en">Sentinel-3 OLCI L2 LFR</a> product provides this data, computed for full resolution.</p>
+<p>Again, we will access a specific item from this collection:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>l2_lfr <span class="ot">&lt;-</span> <span class="fu">stac</span>(<span class="st">"https://stac.core.eopf.eodc.eu/"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collections</span>(<span class="at">collection_id =</span> <span class="st">"sentinel-3-olci-l2-lfr"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">items</span>(<span class="at">feature_id =</span> <span class="st">"S3B_OL_2_LFR____20260105T103813_20260105T104113_20260106T120044_0179_115_165_2160_ESA_O_NT_003"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_request</span>()</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>l2_lfr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>###Item
 - id: 
@@ -856,21 +1025,15 @@ assets, bbox, collection, geometry, id, links, properties, stac_extensions, stac
 </div>
 <p>To access all of the data, we get the “product” asset and then the full Zarr store, again using our helper function to extract array information from the full array path:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>derive_store_array <span class="ot">&lt;-</span> <span class="cf">function</span>(store, product_url) {</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  store <span class="sc">|&gt;</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">array =</span> <span class="fu">str_remove</span>(path, product_url)) <span class="sc">|&gt;</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">relocate</span>(array, <span class="at">.before =</span> path)</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>l2_lfr_url <span class="ot">&lt;-</span> l2_lfr <span class="sc">|&gt;</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_select</span>(<span class="at">asset_names =</span> <span class="st">"product"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_url</span>()</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>l2_lfr_store <span class="ot">&lt;-</span> l2_lfr_url <span class="sc">|&gt;</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>(<span class="at">as_data_frame =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">derive_store_array</span>(l2_lfr_url)</span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>l2_lfr_store</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_url <span class="ot">&lt;-</span> l2_lfr <span class="sc">|&gt;</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_select</span>(<span class="at">asset_names =</span> <span class="st">"product"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assets_url</span>()</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>l2_lfr_store <span class="ot">&lt;-</span> l2_lfr_url <span class="sc">|&gt;</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>(<span class="at">as_data_frame =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">derive_store_array</span>(l2_lfr_url)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>l2_lfr_store</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 46 × 8
    array           path  data_type endianness compressor dim   chunk_dim nchunks
@@ -890,11 +1053,11 @@ assets, bbox, collection, geometry, id, links, properties, stac_extensions, stac
 </div>
 <p>Next, we filter to access measurement data only:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="ot">&lt;-</span> l2_lfr_store <span class="sc">|&gt;</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_starts</span>(array, <span class="st">"/measurements"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">array =</span> <span class="fu">str_remove</span>(array, <span class="st">"/measurements/"</span>))</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="ot">&lt;-</span> l2_lfr_store <span class="sc">|&gt;</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_starts</span>(array, <span class="st">"/measurements"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">array =</span> <span class="fu">str_remove</span>(array, <span class="st">"/measurements/"</span>))</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 8
   array      path        data_type endianness compressor dim   chunk_dim nchunks
@@ -912,10 +1075,10 @@ assets, bbox, collection, geometry, id, links, properties, stac_extensions, stac
 </div>
 <p>Of these, we are interested in Green Instantaneous FAPAR (GIFAPAR). FAPAR is the fraction of absorbed photosynthetically active radiation in the plant canopy. We extract <code>gifapar</code> as well as <code>longitude</code> and <code>latitude</code>. We can get an overview of the arrays’ dimensions and structures:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"gifapar"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"gifapar"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Type: Array
 Path: https://objects.eodc.eu:443/e05ab01a9d56408d82ac32d69a5aae2a:202601-s03olclfr-eu/05/products/cpm_v262/S3B_OL_2_LFR____20260105T103813_20260105T104113_20260106T120044_0179_115_165_2160_ESA_O_NT_003.zarr/measurements/gifapar
@@ -926,10 +1089,10 @@ Data Type: uint8
 Endianness: NA
 Compressor: blosc</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"longitude"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"longitude"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Type: Array
 Path: https://objects.eodc.eu:443/e05ab01a9d56408d82ac32d69a5aae2a:202601-s03olclfr-eu/05/products/cpm_v262/S3B_OL_2_LFR____20260105T103813_20260105T104113_20260106T120044_0179_115_165_2160_ESA_O_NT_003.zarr/measurements/longitude
@@ -940,10 +1103,10 @@ Data Type: int32
 Endianness: little
 Compressor: blosc</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"latitude"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"latitude"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">zarr_overview</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Type: Array
 Path: https://objects.eodc.eu:443/e05ab01a9d56408d82ac32d69a5aae2a:202601-s03olclfr-eu/05/products/cpm_v262/S3B_OL_2_LFR____20260105T103813_20260105T104113_20260106T120044_0179_115_165_2160_ESA_O_NT_003.zarr/measurements/latitude
@@ -955,19 +1118,19 @@ Endianness: little
 Compressor: blosc</code></pre>
 </div>
 </div>
-<p>Similar to the previous example, we can see that all of the arrays are of the same shape: 4091 x 4865. We read in all of the arrays:</p>
+<p>Similar to the previous example, we can see that all of the arrays are of the same shape: 4090 x 4865. We read in all of the arrays:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>gifapar <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"gifapar"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>gifapar_long <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"longitude"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>gifapar_long[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>gifapar <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"gifapar"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>gifapar_long <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"longitude"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>gifapar_long[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          [,1]      [,2]      [,3]      [,4]      [,5]
 [1,] -12519564 -12515610 -12511656 -12507702 -12503748
@@ -976,12 +1139,12 @@ Compressor: blosc</code></pre>
 [4,] -12520717 -12516763 -12512810 -12508856 -12504903
 [5,] -12521101 -12517147 -12513194 -12509241 -12505288</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>gifapar_lat <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"latitude"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>gifapar_lat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>gifapar_lat <span class="ot">&lt;-</span> l2_lfr_measurements <span class="sc">|&gt;</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(array <span class="sc">==</span> <span class="st">"latitude"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(path) <span class="sc">|&gt;</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_zarr_array</span>()</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>gifapar_lat[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         [,1]     [,2]     [,3]     [,4]     [,5]
 [1,] 52444051 52443830 52443608 52443386 52443165
@@ -993,8 +1156,8 @@ Compressor: blosc</code></pre>
 </div>
 <p>We can immediately tell that the <code>longitude</code> and <code>latitude</code> will need to be scaled, since they are not typical values. We again find the scale and offset values for this data:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>gifapar_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/gifapar"</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>gifapar_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>gifapar_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/gifapar"</span>)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>gifapar_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$scale
 [1] 0.003937008
@@ -1002,8 +1165,8 @@ Compressor: blosc</code></pre>
 $offset
 [1] 0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>long_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/longitude"</span>)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>long_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>long_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/longitude"</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>long_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$scale
 [1] 0.000001
@@ -1011,8 +1174,8 @@ $offset
 $offset
 [1] 0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>lat_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/latitude"</span>)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>lat_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>lat_scale_offset <span class="ot">&lt;-</span> <span class="fu">get_scale_and_offset</span>(l2_lfr_url, <span class="st">"measurements/latitude"</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>lat_scale_offset</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$scale
 [1] 0.000001
@@ -1023,14 +1186,14 @@ $offset
 </div>
 <p>Again, both <code>longitude</code> and <code>latitude</code> are unevenly spaced 2-dimensional arrays. This tells us that the data grid is curvilinear, and we use <code>st_as_stars()</code> to get our data into the correct format for visualisation, and scale it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>gifapar_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(<span class="at">gifapar =</span> gifapar) <span class="sc">|&gt;</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_stars</span>(<span class="at">curvilinear =</span> <span class="fu">list</span>(</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">X1 =</span> gifapar_long <span class="sc">*</span> long_scale_offset[[<span class="st">"scale"</span>]],</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">X2 =</span> gifapar_lat <span class="sc">*</span> lat_scale_offset[[<span class="st">"scale"</span>]]</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gifapar =</span> gifapar <span class="sc">*</span> gifapar_scale_offset[[<span class="st">"scale"</span>]])</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>gifapar_stars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>gifapar_stars <span class="ot">&lt;-</span> <span class="fu">st_as_stars</span>(<span class="at">gifapar =</span> gifapar) <span class="sc">|&gt;</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_stars</span>(<span class="at">curvilinear =</span> <span class="fu">list</span>(</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">X1 =</span> gifapar_long <span class="sc">*</span> long_scale_offset[[<span class="st">"scale"</span>]],</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">X2 =</span> gifapar_lat <span class="sc">*</span> lat_scale_offset[[<span class="st">"scale"</span>]]</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gifapar =</span> gifapar <span class="sc">*</span> gifapar_scale_offset[[<span class="st">"scale"</span>]])</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>gifapar_stars</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>stars object with 2 dimensions and 1 attribute
 attribute(s), summary of first 100000 cells:
@@ -1045,15 +1208,9 @@ curvilinear grid</code></pre>
 </div>
 <p>Finally, we plot the GIFAPAR:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gifapar_stars, <span class="at">as_points =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="st">"equal"</span>, <span class="at">col =</span> hcl.colors)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="54_eopf_zarr_r_examples_files/figure-html/gifapar-plot-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gifapar_stars, <span class="at">as_points =</span> <span class="cn">FALSE</span>, <span class="at">axes =</span> <span class="cn">TRUE</span>, <span class="at">breaks =</span> <span class="st">"equal"</span>, <span class="at">col =</span> hcl.colors)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-</div>
+<p><img src="../img/54_r-examples-gifapar-plot.png" class="img-fluid"></p>
 </section>
 <section id="now-it-is-your-turn" class="level2">
 <h2 class="anchored" data-anchor-id="now-it-is-your-turn">💪 Now it is your turn</h2>
@@ -1062,6 +1219,10 @@ curvilinear grid</code></pre>
 <h3 class="anchored" data-anchor-id="task-1-visualise-ocean-swell-spectra">Task 1: Visualise Ocean Swell spectra</h3>
 <p>Following the steps from the Ocean Wind field analysis, extract the Ocean Swell spectra data and visualise it. Check if the data needs to be scaled or offset, and do so if necessary.</p>
 </section>
+<section id="task-2-visualise-a-quicklook-composite-for-another-item-or-mission" class="level3">
+<h3 class="anchored" data-anchor-id="task-2-visualise-a-quicklook-composite-for-another-item-or-mission">Task 2: Visualise a quicklook composite for another item or mission</h3>
+<p>Following the steps for the quicklook composite visualisation, choose data from another item, or another mission altogether, and visualize its quicklook image. Hint: you can tell if a mission has a quicklook image if it has an entry for “True colour image” under its assets on the EOPF Sentinel Zarr Sample Service STAC Catalog!</p>
+</section>
 <section id="task-2-visualise-another-measurement-from-sentinel-3-olci-level-2-lfr" class="level3">
 <h3 class="anchored" data-anchor-id="task-2-visualise-another-measurement-from-sentinel-3-olci-level-2-lfr">Task 2: Visualise another measurement from Sentinel-3 OLCI Level-2 LFR</h3>
 <p>Review the <a href="https://stac.browser.user.eopf.eodc.eu/collections/sentinel-3-olci-l2-lfr?.language=en">Sentinel-3 OLCI Level-2 LFR page</a> from the EOPF Sentinel Zarr Sample Service STAC Catalog and choose another measurement of interest, then visualise it.</p>
@@ -1069,7 +1230,7 @@ curvilinear grid</code></pre>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In this section, we accessed additional Zarr data from the <a href="https://stac.browser.user.eopf.eodc.eu/?.language=en">EOPF Sentinel Zarr Sample Service STAC Catalog</a> using <code>rstac</code> and <code>Rarr</code>. We extracted measurement variables and curvillinear coordinates, formatted and scaled them using the <code>stars</code> package’s <code>st_as_stars()</code> function, and visualised the data.</p>
+<p>In this section, we accessed additional Zarr data from the <a href="https://stac.browser.user.eopf.eodc.eu/?.language=en">EOPF Sentinel Zarr Sample Service STAC Catalog</a> using <code>rstac</code> and <code>Rarr</code>. We learned how to visualise a quicklook image at different resolutions. We also extracted measurement variables and curvillinear coordinates, formatted and scaled them using the <code>stars</code> package’s <code>st_as_stars()</code> function, and visualised the data.</p>
 </section>
 <section id="whats-next" class="level2">
 <h2 class="anchored" data-anchor-id="whats-next">What’s next?</h2>
@@ -1485,8 +1646,8 @@ curvilinear grid</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../05_zarr_tools/57_rstac_gdalcubes.html" class="pagination-link" aria-label="Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using `rstac` and `gdalcubes`">
-        <span class="nav-page-text"><span class="chapter-title">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and <code>gdalcubes</code></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../05_zarr_tools/55_safe_vs_zarr.html" class="pagination-link" aria-label="Comparisons of SAFE vs Zarr in R">
+        <span class="nav-page-text"><span class="chapter-title">Comparisons of SAFE vs Zarr in R</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
