@@ -579,10 +579,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Copying remote Zarr to local storage... (may take several minutes)
-Copying to s3://&lt;fsspec.mapping.FSMap object at 0x7f5eaaf5ce30&gt; ...</code></pre>
+Copying to s3://&lt;fsspec.mapping.FSMap object at 0x7f0ab01a7a40&gt; ...</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>&lt;xarray.backends.zarr.ZarrStore at 0x7f5e878bae80&gt;</code></pre>
+<pre><code>&lt;xarray.backends.zarr.ZarrStore at 0x7f0aa8ed3c40&gt;</code></pre>
 </div>
 </div>
 <p>Then, we can access the dataset from the S3 bucket and look inside the group that contains the 10-metre reflectance data to understand which variables, dimensions, and coordinates it contains.</p>
@@ -690,6 +690,7 @@ body.vscode-dark {
   min-width: 300px;
   max-width: 700px;
   line-height: 1.6;
+  padding-bottom: 4px;
 }
 
 .xr-text-repr-fallback {
@@ -700,8 +701,11 @@ body.vscode-dark {
 .xr-header {
   padding-top: 6px;
   padding-bottom: 6px;
-  margin-bottom: 4px;
+}
+
+.xr-header {
   border-bottom: solid 1px var(--xr-border-color);
+  margin-bottom: 4px;
 }
 
 .xr-header > div,
@@ -712,20 +716,15 @@ body.vscode-dark {
 }
 
 .xr-obj-type,
-.xr-obj-name,
-.xr-group-name {
+.xr-obj-name {
   margin-left: 2px;
   margin-right: 10px;
 }
 
-.xr-group-name::before {
-  content: "📁";
-  padding-right: 0.3em;
-}
-
-.xr-group-name,
-.xr-obj-type {
+.xr-obj-type,
+.xr-group-box-contents > label {
   color: var(--xr-font-color2);
+  display: block;
 }
 
 .xr-sections {
@@ -740,28 +739,39 @@ body.vscode-dark {
   display: contents;
 }
 
-.xr-section-item input {
-  display: inline-block;
+.xr-section-item > input,
+.xr-group-box-contents > input,
+.xr-array-wrap > input {
+  display: block;
   opacity: 0;
   height: 0;
   margin: 0;
 }
 
-.xr-section-item input + label {
+.xr-section-item > input + label,
+.xr-var-item > input + label {
   color: var(--xr-disabled-color);
-  border: 2px solid transparent !important;
 }
 
-.xr-section-item input:enabled + label {
+.xr-section-item > input:enabled + label,
+.xr-var-item > input:enabled + label,
+.xr-array-wrap > input:enabled + label,
+.xr-group-box-contents > input:enabled + label {
   cursor: pointer;
   color: var(--xr-font-color2);
 }
 
-.xr-section-item input:focus + label {
-  border: 2px solid var(--xr-font-color0) !important;
+.xr-section-item > input:focus-visible + label,
+.xr-var-item > input:focus-visible + label,
+.xr-array-wrap > input:focus-visible + label,
+.xr-group-box-contents > input:focus-visible + label {
+  outline: auto;
 }
 
-.xr-section-item input:enabled + label:hover {
+.xr-section-item > input:enabled + label:hover,
+.xr-var-item > input:enabled + label:hover,
+.xr-array-wrap > input:enabled + label:hover,
+.xr-group-box-contents > input:enabled + label:hover {
   color: var(--xr-font-color0);
 }
 
@@ -769,11 +779,25 @@ body.vscode-dark {
   grid-column: 1;
   color: var(--xr-font-color2);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.xr-section-summary > em {
+  font-weight: normal;
+}
+
+.xr-span-grid {
+  grid-column-end: -1;
 }
 
 .xr-section-summary > span {
   display: inline-block;
-  padding-left: 0.5em;
+  padding-left: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label > span {
+  display: inline-block;
+  padding-left: 0.6em;
 }
 
 .xr-section-summary-in:disabled + label {
@@ -801,7 +825,8 @@ body.vscode-dark {
 }
 
 .xr-section-summary,
-.xr-section-inline-details {
+.xr-section-inline-details,
+.xr-group-box-contents > label {
   padding-top: 4px;
 }
 
@@ -810,20 +835,29 @@ body.vscode-dark {
 }
 
 .xr-section-details {
-  display: none;
   grid-column: 1 / -1;
   margin-top: 4px;
   margin-bottom: 5px;
+}
+
+.xr-section-summary-in ~ .xr-section-details {
+  display: none;
 }
 
 .xr-section-summary-in:checked ~ .xr-section-details {
   display: contents;
 }
 
+.xr-children {
+  display: inline-grid;
+  grid-template-columns: 100%;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+}
+
 .xr-group-box {
   display: inline-grid;
-  grid-template-columns: 0px 20px auto;
-  width: 100%;
+  grid-template-columns: 0px 30px auto;
 }
 
 .xr-group-box-vline {
@@ -837,13 +871,43 @@ body.vscode-dark {
   grid-column-start: 2;
   grid-row-start: 1;
   height: 1em;
-  width: 20px;
+  width: 26px;
   border-bottom: 0.2em solid;
   border-color: var(--xr-border-color);
 }
 
 .xr-group-box-contents {
   grid-column-start: 3;
+  padding-bottom: 4px;
+}
+
+.xr-group-box-contents > label::before {
+  content: "📂";
+  padding-right: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label::before {
+  content: "📁";
+}
+
+.xr-group-box-contents > input:checked + label {
+  padding-bottom: 0px;
+}
+
+.xr-group-box-contents > input:checked ~ .xr-sections {
+  display: none;
+}
+
+.xr-group-box-contents > input + label > span {
+  display: none;
+}
+
+.xr-group-box-ellipsis {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--xr-font-color2);
+  letter-spacing: 0.15em;
+  cursor: default;
 }
 
 .xr-array-wrap {
@@ -1079,12 +1143,12 @@ Coordinates:
   * y        (y) float32 44kB 5.3e+06 5.3e+06 5.3e+06 ... 5.19e+06 5.19e+06
   * x        (x) float32 44kB 7e+05 7e+05 7e+05 ... 8.097e+05 8.098e+05
 Data variables:
+    b04      (y, x) float64 964MB ...
     b03      (y, x) float64 964MB ...
     b02      (y, x) float64 964MB ...
-    b08      (y, x) float64 964MB ...
-    b04      (y, x) float64 964MB ...</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-94787397-4ff2-46c4-83ff-5be4cf968691" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-94787397-4ff2-46c4-83ff-5be4cf968691" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list"><li><span class="xr-has-index">y</span>: 10980</li><li><span class="xr-has-index">x</span>: 10980</li></ul></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-7cfb11f1-372c-47d9-b7cb-bc5764ffa25f" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-7cfb11f1-372c-47d9-b7cb-bc5764ffa25f" class="xr-section-summary">Coordinates: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">y</span></div><div class="xr-var-dims">(y)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">5.3e+06 5.3e+06 ... 5.19e+06</div><input id="attrs-22a8761f-78c1-440c-9911-fc0f09270939" class="xr-var-attrs-in" type="checkbox"><label for="attrs-22a8761f-78c1-440c-9911-fc0f09270939" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-c44b285d-9469-4cce-ac31-530e0f3f7503" class="xr-var-data-in" type="checkbox"><label for="data-c44b285d-9469-4cce-ac31-530e0f3f7503" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>dimensions :</span></dt><dd>['y']</dd><dt><span>dtype :</span></dt><dd>&lt;f4</dd><dt><span>long_name :</span></dt><dd>y coordinates of the image at 10m in meters from up-left pixel</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class="xr-var-data"><pre>array([5.300035e+06, 5.300025e+06, 5.300015e+06, ..., 5.190265e+06,
-       5.190255e+06, 5.190245e+06], shape=(10980,), dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">x</span></div><div class="xr-var-dims">(x)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">7e+05 7e+05 ... 8.097e+05 8.098e+05</div><input id="attrs-a1e23354-8c89-438f-ad55-3e8e323bce7f" class="xr-var-attrs-in" type="checkbox"><label for="attrs-a1e23354-8c89-438f-ad55-3e8e323bce7f" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-0eaa9b0c-63e7-430a-8422-7f32434ff844" class="xr-var-data-in" type="checkbox"><label for="data-0eaa9b0c-63e7-430a-8422-7f32434ff844" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>dimensions :</span></dt><dd>['x']</dd><dt><span>dtype :</span></dt><dd>&lt;f4</dd><dt><span>long_name :</span></dt><dd>x coordinates of the image at 10m in meters from up-left pixel</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class="xr-var-data"><pre>array([699965., 699975., 699985., ..., 809735., 809745., 809755.],
-      shape=(10980,), dtype=float32)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-cd416fa8-4e9e-41e0-b6f9-6154d38055e9" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-cd416fa8-4e9e-41e0-b6f9-6154d38055e9" class="xr-section-summary">Data variables: <span>(4)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>b03</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-c76f4997-0a54-42e2-bb7b-80c14dd5ce43" class="xr-var-attrs-in" type="checkbox"><label for="attrs-c76f4997-0a54-42e2-bb7b-80c14dd5ce43" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-33cd8c17-33ac-4a85-9b4d-5fe0bb999b0c" class="xr-var-data-in" type="checkbox"><label for="data-33cd8c17-33ac-4a85-9b4d-5fe0bb999b0c" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 03 560 nm', 'scale_factor': 0.0001, 'short_name': 'b03_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 03 560 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b02</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-af39b830-c07b-4eb6-bb24-fe274bea070b" class="xr-var-attrs-in" type="checkbox"><label for="attrs-af39b830-c07b-4eb6-bb24-fe274bea070b" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-fb374914-f224-4423-a77e-72488f76c40d" class="xr-var-data-in" type="checkbox"><label for="data-fb374914-f224-4423-a77e-72488f76c40d" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 02 490 nm', 'scale_factor': 0.0001, 'short_name': 'b02_10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 02 490 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b08</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-19fdfeda-e31a-4712-8743-e7e9ee1da7b0" class="xr-var-attrs-in" type="checkbox"><label for="attrs-19fdfeda-e31a-4712-8743-e7e9ee1da7b0" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-ed6d797f-481c-429e-ac6e-0a711a92fcf4" class="xr-var-data-in" type="checkbox"><label for="data-ed6d797f-481c-429e-ac6e-0a711a92fcf4" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 08 842 nm', 'scale_factor': 0.0001, 'short_name': 'b08_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 08 842 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b04</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-1ce40ee6-5358-4f2f-81f7-6a4cf4c183a4" class="xr-var-attrs-in" type="checkbox"><label for="attrs-1ce40ee6-5358-4f2f-81f7-6a4cf4c183a4" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-747ceaa4-e05d-49da-80f5-eb6991c4ca58" class="xr-var-data-in" type="checkbox"><label for="data-747ceaa4-e05d-49da-80f5-eb6991c4ca58" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 04 665 nm', 'scale_factor': 0.0001, 'short_name': 'b04_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 04 665 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li></ul></div></li></ul></div></div>
+    b08      (y, x) float64 964MB ...</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-b228e66d-d103-4026-a732-eed7ae9b4a7a" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-b228e66d-d103-4026-a732-eed7ae9b4a7a" class="xr-section-summary">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list"><li><span class="xr-has-index">y</span>: 10980</li><li><span class="xr-has-index">x</span>: 10980</li></ul></div></li><li class="xr-section-item"><input id="section-264de48e-0623-4f70-bc1e-b9457e0d5454" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-264de48e-0623-4f70-bc1e-b9457e0d5454" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">y</span></div><div class="xr-var-dims">(y)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">5.3e+06 5.3e+06 ... 5.19e+06</div><input id="attrs-3f4c7009-ad6c-4505-b89f-0b765286b85d" class="xr-var-attrs-in" type="checkbox"><label for="attrs-3f4c7009-ad6c-4505-b89f-0b765286b85d" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-a093f699-47e0-42a5-ac34-555a298be83b" class="xr-var-data-in" type="checkbox"><label for="data-a093f699-47e0-42a5-ac34-555a298be83b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>dimensions :</span></dt><dd>['y']</dd><dt><span>dtype :</span></dt><dd>&lt;f4</dd><dt><span>long_name :</span></dt><dd>y coordinates of the image at 10m in meters from up-left pixel</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class="xr-var-data"><pre>array([5.300035e+06, 5.300025e+06, 5.300015e+06, ..., 5.190265e+06,
+       5.190255e+06, 5.190245e+06], shape=(10980,), dtype=float32)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">x</span></div><div class="xr-var-dims">(x)</div><div class="xr-var-dtype">float32</div><div class="xr-var-preview xr-preview">7e+05 7e+05 ... 8.097e+05 8.098e+05</div><input id="attrs-40d444c9-f458-4022-b712-bc79cb83729d" class="xr-var-attrs-in" type="checkbox"><label for="attrs-40d444c9-f458-4022-b712-bc79cb83729d" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-28fd7e38-2df4-4ab1-8e38-1689e1b116fd" class="xr-var-data-in" type="checkbox"><label for="data-28fd7e38-2df4-4ab1-8e38-1689e1b116fd" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>dimensions :</span></dt><dd>['x']</dd><dt><span>dtype :</span></dt><dd>&lt;f4</dd><dt><span>long_name :</span></dt><dd>x coordinates of the image at 10m in meters from up-left pixel</dd><dt><span>units :</span></dt><dd>m</dd></dl></div><div class="xr-var-data"><pre>array([699965., 699975., 699985., ..., 809735., 809745., 809755.],
+      shape=(10980,), dtype=float32)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-87ea1832-36db-4e84-8c32-8e0f07e118ee" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-87ea1832-36db-4e84-8c32-8e0f07e118ee" class="xr-section-summary" title="Expand/collapse section">Data variables: <span>(4)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>b04</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-a334a8d4-1c84-440e-9fea-099da81fa5ee" class="xr-var-attrs-in" type="checkbox"><label for="attrs-a334a8d4-1c84-440e-9fea-099da81fa5ee" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-7ddfeef7-fa8e-435a-b9f0-0c4e98671dde" class="xr-var-data-in" type="checkbox"><label for="data-7ddfeef7-fa8e-435a-b9f0-0c4e98671dde" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 04 665 nm', 'scale_factor': 0.0001, 'short_name': 'b04_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 04 665 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b03</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-fc650d88-e925-4eb2-8835-5ce1cec1a085" class="xr-var-attrs-in" type="checkbox"><label for="attrs-fc650d88-e925-4eb2-8835-5ce1cec1a085" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-1f1fa0e8-055b-47bc-b0f2-189bf8feb497" class="xr-var-data-in" type="checkbox"><label for="data-1f1fa0e8-055b-47bc-b0f2-189bf8feb497" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 03 560 nm', 'scale_factor': 0.0001, 'short_name': 'b03_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 03 560 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b02</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-631bc4bc-2325-4ca2-9aac-09b1cf8423c9" class="xr-var-attrs-in" type="checkbox"><label for="attrs-631bc4bc-2325-4ca2-9aac-09b1cf8423c9" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-032aea6d-4594-4d1b-a519-90ae2b859fa8" class="xr-var-data-in" type="checkbox"><label for="data-032aea6d-4594-4d1b-a519-90ae2b859fa8" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 02 490 nm', 'scale_factor': 0.0001, 'short_name': 'b02_10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 02 490 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>b08</span></div><div class="xr-var-dims">(y, x)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">...</div><input id="attrs-b59b0c10-1932-45ef-8c9a-2cef78aa30cd" class="xr-var-attrs-in" type="checkbox"><label for="attrs-b59b0c10-1932-45ef-8c9a-2cef78aa30cd" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-377fa7c2-2f0c-4018-b62c-068c4dee3bcb" class="xr-var-data-in" type="checkbox"><label for="data-377fa7c2-2f0c-4018-b62c-068c4dee3bcb" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"><dt><span>_eopf_attrs :</span></dt><dd>{'add_offset': -0.1, 'coordinates': ['y', 'x'], 'dimensions': ['y', 'x'], 'dtype': '&lt;u2', 'eopf_is_masked': True, 'eopf_target_dtype': '&lt;f8', 'fill_value': 0, 'long_name': 'BOA reflectance from MSI acquisition at spectral band 08 842 nm', 'scale_factor': 0.0001, 'short_name': 'b08_r10m', 'units': 'digital_counts', 'valid_max': 65535, 'valid_min': 1}</dd><dt><span>dtype :</span></dt><dd>&lt;u2</dd><dt><span>long_name :</span></dt><dd>BOA reflectance from MSI acquisition at spectral band 08 842 nm</dd><dt><span>units :</span></dt><dd>digital_counts</dd></dl></div><div class="xr-var-data"><pre>[120560400 values with dtype=float64]</pre></div></li></ul></div></li></ul></div></div>
 </div>
 </div>
 </section>
@@ -1102,7 +1166,7 @@ Data variables:
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>y_dim <span class="op">=</span> <span class="bu">next</span>((d <span class="cf">for</span> d <span class="kw">in</span> spatial_dims <span class="cf">if</span> d <span class="kw">in</span> [<span class="st">'y'</span>, <span class="st">'Y'</span>, <span class="st">'lat'</span>, <span class="st">'latitude'</span>]), <span class="st">'y'</span>)  <span class="co"># Identify y dimension</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variables: </span><span class="sc">{</span>variables<span class="sc">}</span><span class="ss"> | Dims: </span><span class="sc">{</span>spatial_dims<span class="sc">}</span><span class="ss"> | Shape: </span><span class="sc">{</span>dataset[variables[<span class="dv">0</span>]]<span class="sc">.</span>shape<span class="sc">}</span><span class="ss"> | Using: x_dim='</span><span class="sc">{</span>x_dim<span class="sc">}</span><span class="ss">', y_dim='</span><span class="sc">{</span>y_dim<span class="sc">}</span><span class="ss">'</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Variables: ['b03', 'b02', 'b08', 'b04'] | Dims: ['y', 'x'] | Shape: (10980, 10980) | Using: x_dim='x', y_dim='y'
+<pre><code>Variables: ['b04', 'b03', 'b02', 'b08'] | Dims: ['y', 'x'] | Shape: (10980, 10980) | Using: x_dim='x', y_dim='y'
 </code></pre>
 </div>
 </div>
@@ -1169,10 +1233,10 @@ Overview datasets created successfully (in memory only, not written to disk)</co
   "version": "1.0",
   "resampling_method": "average",
   "variables": [
+    "b04",
     "b03",
     "b02",
-    "b08",
-    "b04"
+    "b08"
   ],
   "layout": [
     {
@@ -1358,7 +1422,7 @@ Overview datasets created successfully (in memory only, not written to disk)</co
 <span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"    │   ├── </span><span class="sc">{</span>level_id<span class="sc">}</span><span class="ss">/"</span>)</span>
 <span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    └── .zattrs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Adding overviews to measurements/reflectance/r10m | Variables: ['b03', 'b02', 'b08', 'b04'] | Path: 'overviews'
+<pre><code>Adding overviews to measurements/reflectance/r10m | Variables: ['b04', 'b03', 'b02', 'b08'] | Path: 'overviews'
 
 Writing 7 overview levels...
 Generating consolidated metadata for overviews/
@@ -1367,7 +1431,7 @@ Successfully added overviews to measurements/reflectance/r10m
 
 Final structure:
   measurements/reflectance/r10m/
-    ├── b03, b02, b08, b04
+    ├── b04, b03, b02, b08
     ├── x, y
     ├── overviews/
     │   ├── L1/
