@@ -183,12 +183,263 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           set -euo pipefail
+          
+          echo "============================================"
+          echo "📋 Files to render:"
+          tr '\0' '\n' < changed.lst | sed 's/^/  /'
+          echo "============================================"
+          echo ""
+          
           while IFS= read -r -d '' f; do
-            echo "Rendering (standalone): $f"
-            quarto render "$f" --to html
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "🔄 Rendering: $f"
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            
+            # Check if file exists
+            if [[ ! -f "$f" ]]; then
+              echo "❌ File not found: $f"
+              continue
+            fi
+            
+            # Show file size
+            ls -lh "$f"
+            echo ""
+            
+            # Render with verbose output
+            echo "Running: quarto render \"$f\" --to html --execute"
+            quarto render "$f" --to html --execute || {
+              echo "❌ Render failed for $f"
+              continue
+            }
+            
+            echo ""
+            echo "✅ Render complete for $f"
+            echo ""
+            
+            # List what was created
+            base_name="${f%.ipynb}"
+            base_name="${base_name%.qmd}"
+            files_dir="${base_name}_files"
+            html_file="${base_name}.html"
+            
+            echo "📁 Checking for outputs:"
+            if [[ -f "$html_file" ]]; then
+              echo "  ✅ HTML: $html_file ($(du -h "$html_file" | cut -f1))"
+            else
+              echo "  ❌ HTML: $html_file (not found)"
+            fi
+            
+            if [[ -d "$files_dir" ]]; then
+              echo "  ✅ Files dir: $files_dir"
+              echo "     Contents:"
+              find "$files_dir" -type f -exec ls -lh {} \; | awk '{printf "       %s %s\n", $5, $9}'
+            else
+              echo "  ❌ Files dir: $files_dir (not found)"
+            fi
+            echo ""
+            
           done < changed.lst
+          
+          echo "============================================"
+          echo "✅ All rendering complete"
+          echo "============================================"
         env:
           BUCKET_NAME: ${{ secrets.RENDER_BUCKET_NAME }}
           ACCESS_KEY: ${{ secrets.RENDER_BUCKET_ACCESS_KEY }}
           SECRET_KEY: ${{ secrets.RENDER_BUCKET_SECRET_KEY }}
           BUCKET_ENDPOINT: ${{ secrets.RENDER_BUCKET_ENDPOINT }}
+
+      - name: Debug - Show all generated files
+        if: steps.changed.outputs.none != 'true'
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          echo "============================================"
+          echo "🔍 COMPREHENSIVE FILE SYSTEM CHECK"
+          echo "============================================"
+          echo ""
+          
+          echo "Current directory: $(pwd)"
+          echo ""
+          
+          echo "_book directory structure:"
+          if [[ -d "_book" ]]; then
+            echo "  ✅ _book exists"
+            find _book -type f -name "*.html" -o -name "*.png" -o -name "*.svg" | head -50
+          else
+            echo "  ❌ No _book directory"
+          fi
+          echo ""
+          
+          echo "All PNG files in _book:"
+          find _book -type f -name "*.png" 2>/dev/null | head -20 || echo "  (none)"
+          echo ""
+          
+          echo "All SVG files in _book:"
+          find _book -type f -name "*.svg" 2>/dev/null | head -20 || echo "  (none)"
+          echo ""
+
+      - name: Debug - Show rendered outputs
+        if: steps.changed.outputs.none != 'true'
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          echo "============================================"
+          echo "📁 DETAILED OUTPUT INSPECTION"
+          echo "============================================"
+          echo ""
+          
+          # Show current directory
+          echo "Current directory: $(pwd)"
+          echo ""
+          
+          # Check if _book directory exists
+          echo "Checking _book directory:"
+          if [[ -d "_book" ]]; then
+            echo "  ✅ _book directory exists"
+            echo "  Contents:"
+            ls -la _book/ | head -20
+            echo ""
+            echo "  Looking for Julia outputs in _book:"
+            find _book -type f -name "*julia*" | head -20
+          else
+            echo "  ⚠️  _book directory does not exist"
+          fi
+          echo ""
+          
+          # Show all *_files directories created (including in _book)
+          echo "Generated _files directories:"
+          if find . -type d -name "*_files" ! -path "./.venv/*" ! -path "./.git/*" -print | grep -q .; then
+            find . -type d -name "*_files" ! -path "./.venv/*" ! -path "./.git/*" | while read dir; do
+              echo "  📂 $dir"
+              du -sh "$dir" | awk '{print "     Size: " $1}'
+            done
+          else
+            echo "  ⚠️  No _files directories found"
+          fi
+          echo ""
+          
+          # Show figure-html directories specifically (including in _book)
+          echo "Figure output directories:"
+          if find . -type d -name "figure-html" ! -path "./.venv/*" ! -path "./.git/*" -print | grep -q .; then
+            find . -type d -name "figure-html" ! -path "./.venv/*" ! -path "./.git/*" | sed 's/^/  ✅ /'
+          else
+            echo "  ⚠️  No figure-html directories found"
+          fi
+          echo ""
+          
+          # List all files in figure-html directories with sizes
+          echo "Files in figure-html directories:"
+          found_any=false
+          while IFS= read -r dir; do
+            if [[ -d "$dir" ]]; then
+              found_any=true
+              echo "  📁 $dir:"
+              if ls -lh "$dir" 2>/dev/null | tail -n +2 | grep -q .; then
+                ls -lh "$dir" 2>/dev/null | tail -n +2 | awk '{printf "     %s  %s\n", $5, $9}'
+              else
+                echo "     (empty directory)"
+              fi
+            fi
+          done < <(find . -type d -name "figure-html" ! -path "./.venv/*" ! -path "./.git/*")
+          if [[ "$found_any" == "false" ]]; then
+            echo "  ⚠️  No figure-html directories to inspect"
+          fi
+          echo ""
+          
+          # Show HTML outputs (check both source dir and _book dir)
+          echo "Generated HTML files:"
+          while IFS= read -r -d '' f; do
+            # Remove extension and add .html once
+            base="${f%.ipynb}"
+            base="${base%.qmd}"
+            html_file="${base}.html"
+            book_html_file="_book/${base}.html"
+            
+            if [[ -f "$html_file" ]]; then
+              size=$(du -h "$html_file" | cut -f1)
+              echo "  ✅ $html_file ($size)"
+            elif [[ -f "$book_html_file" ]]; then
+              size=$(du -h "$book_html_file" | cut -f1)
+              echo "  ✅ $book_html_file ($size)"
+            else
+              echo "  ❌ $html_file (not found in source or _book)"
+            fi
+          done < changed.lst
+          echo ""
+          echo "============================================"
+
+      - name: Check for oversized figure files
+        if: steps.changed.outputs.none != 'true'
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          echo "🔍 Checking for oversized figure files..."
+
+          # Find all SVG files in rendered output directories (including _book)
+          oversized_files=()
+          while IFS= read -r svg_file; do
+            if [[ -f "$svg_file" ]]; then
+              # Use stat command compatible with both Linux and macOS
+              size_bytes=$(stat -c%s "$svg_file" 2>/dev/null || stat -f%z "$svg_file" 2>/dev/null)
+              size_mb=$((size_bytes / 1048576))
+              
+              # Check if file is larger than 10MB (will cause issues at 100MB GitHub limit)
+              if [[ $size_bytes -gt 10485760 ]]; then
+                oversized_files+=("$svg_file (${size_mb}MB)")
+              fi
+            fi
+          done < <(find . -name "*.svg" -path "*_files/figure-html/*" -type f ! -path "./.venv/*")
+
+          if [[ ${#oversized_files[@]} -gt 0 ]]; then
+            echo ""
+            echo "❌ Found oversized SVG files that will cause GitHub push failures (>10MB):"
+            printf '  %s\n' "${oversized_files[@]}"
+            echo ""
+            echo "💡 Fix: Add these lines to the document's YAML header:"
+            echo "   format:"
+            echo "     html:"
+            echo "       fig-format: png"
+            echo "       fig-dpi: 150"
+            echo ""
+            echo "   Or ensure _quarto.yml has global PNG settings."
+            exit 1
+          else
+            echo "✅ No oversized figure files found"
+          fi
+
+      - name: Figure format summary
+        if: steps.changed.outputs.none != 'true'
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          echo "📊 Figure format summary:"
+          echo ""
+          
+          # Count PNG files (including _book)
+          png_count=$(find . -name "*.png" -path "*_files/figure-html/*" -type f ! -path "./.venv/*" | wc -l)
+          echo "  PNG files: $png_count"
+          
+          # Count SVG files (including _book)
+          svg_count=$(find . -name "*.svg" -path "*_files/figure-html/*" -type f ! -path "./.venv/*" | wc -l)
+          echo "  SVG files: $svg_count"
+
+          # Show SVG files with sizes if any exist
+          if [[ $svg_count -gt 0 ]]; then
+            echo ""
+            echo "  SVG files found:"
+            while IFS= read -r svg_file; do
+              if [[ -f "$svg_file" ]]; then
+                size_bytes=$(stat -c%s "$svg_file" 2>/dev/null || stat -f%z "$svg_file" 2>/dev/null)
+                size_kb=$((size_bytes / 1024))
+                echo "    - $svg_file (${size_kb}KB)"
+              fi
+            done < <(find . -name "*.svg" -path "*_files/figure-html/*" -type f ! -path "./.venv/*")
+          fi
+
+          echo ""
+          echo "✅ Figure format check complete"
