@@ -3,6 +3,9 @@ title: "Comparisons of SAFE vs Zarr in R"
 format: html
 ---
   
+**By:** *[@sharlagelfand](https://github.com/sharlagelfand)*  | [SparkGeo](https://sparkgeo.com/)
+
+
 ### Introduction
 
 Prior to the introduction of EOPF's Zarr, the ESA's Copernicus data was published and distributed using the [Standard Archive Format for Europe (SAFE)](https://earth.esa.int/eogateway/activities/safe-the-standard-archive-format-for-europe). Sentinel scenes were downloaded as zip archives, containing several files as well as an XML manifest. In order to access any scene data, the entire zip archive had to be downloaded, which could be quite inefficient.
@@ -444,3 +447,6 @@ The approach adopted for STAC metadata in the EOPF Sample STAC Service most clos
 ### Memory Limitations
 
 If a use case requires more memory than the data consumer can support, even after optimisation efforts, it may be necessary to use a cloud-hosted compute environment with access to a larger pool of compute resources.
+
+## What's next?
+In the following [notebook](56_zarr_R_rarr.qmd) we will explore the use of `rarr`, `terra` and `stars` to showcase retrieval of **Sentinel-2 L2A Products** with `R`.

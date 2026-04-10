@@ -59,7 +59,7 @@ book:
             - 05_zarr_tools/58_rstac_gdalcubes.qmd
         - section: "Julia"
           contents:
-            - 05_zarr_tools/60_eopf_zarr_julia.ipynb
+            - 05_zarr_tools/510_eopf_zarr_julia.ipynb
         - section: "Qgis"
           contents:
             - 05_zarr_tools/52_eopf_stac_qgis.qmd
@@ -83,6 +83,11 @@ book:
         - 06_eopf_zarr_in_action/67_reservoir_surface_monitoring.ipynb
         - 06_eopf_zarr_in_action/68_vegetation_anomalies.ipynb
         - 06_eopf_zarr_in_action/610_s2_s3_fusion.ipynb
+        # - 06_eopf_zarr_in_action/611_intertidal_vegetation_monitoring_with_s2.ipynb 
+        # - 06_eopf_zarr_in_action/612_cloud_probability_s2.ipynb
+        # - 06_eopf_zarr_in_action/613_computing_lai_s2.ipynb
+        # - 06_eopf_zarr_in_action/614_flood_change_detection_s1.ipynb
+        # - 06_eopf_zarr_in_action/615_vad_ppi.ipynb
 
     - glossary.qmd
     - references.qmd
