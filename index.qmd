@@ -4,12 +4,12 @@ format: html
 ---
 <h3> Your community guide for working with EOPF Sentinel Zarr data in the cloud </h3>
 
-Explore EOPF 101, an open community resource designed to help Sentinel data users explore EOPF Sentinel Zarr data in the cloud. 
+Explore EOPF 101, an open community resource designed to help Sentinel data users explore EOPF Sentinel Zarr data in the cloud.
 With our step-by-step and hands-on tutorials, you'll learn how to effectively use EOPF Sentinel Zarr products and build Earth Observation workflows that scale.
 
 <h2> 🚀 Ready to explore EOPF 101? </h2>
 EOPF 101 is designed for Sentinel data users who are new to cloud-optimised geospatial formats and cloud-based workflows.
-It introduces you to fundamental cloud-native geospatial concepts, the Earth Observation Processing Framework (EOPF) activities by ESA, 
+It introduces you to fundamental cloud-native geospatial concepts, the Earth Observation Processing Framework (EOPF) activities by ESA,
 re-processed EOPF Sentinel Zarr data, as well as tools and libraries to work with EOPF Sentinel Zarr data in the cloud.
 
 Across six chapters, EOPF 101 gradually introduces you to the EOPF Sentinel Zarr products, how you can search and access these, relevant tools and plugins to use EOPF Sentinel Zarr data in different working environments, as well as practical end-to-end application workflows highlighting the benefits of EOPF Sentinel Zarr data.
@@ -45,6 +45,10 @@ Across six chapters, EOPF 101 gradually introduces you to the EOPF Sentinel Zarr
     * [Access EOPF Sentinel Zarr using `Rarr`](./05_zarr_tools/56_zarr_R_rarr.qmd)
     * [Access EOPF Sentinel Zarr via GDAL in `stars` and `terra`](./05_zarr_tools/57_zarr_R_gdal.qmd)
     * [Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using `rstac` and `gdalcubes](./05_zarr_tools/58_rstac_gdalcubes.qmd)
+
+  * Julia
+    * [Access Zarr Data with Julia](./05_zarr_tools/510_eopf_zarr_julia.ipynb)
+
   * Qgis
     * [Access EOPF Zarr in QGIS Using STAC](./05_zarr_tools/52_eopf_stac_qgis.qmd)
 
@@ -61,7 +65,7 @@ Across six chapters, EOPF 101 gradually introduces you to the EOPF Sentinel Zarr
     * [Visualising Multiscale Pyramids](./06_eopf_zarr_in_action/66_use_overviews.ipynb)
   * [Reservoir Surface Monitoring](./06_eopf_zarr_in_action/67_reservoir_surface_monitoring.ipynb)
   * [Analysing Forest Vegetation Anomalies](./06_eopf_zarr_in_action/68_vegetation_anomalies.ipynb)
-  * [African rangeland monitoring with Sentinel-2 and Sentinel-3](./06_eopf_zarr_in_action/610_s2_s3_fusion.ipynb)   
+  * [African rangeland monitoring with Sentinel-2 and Sentinel-3](./06_eopf_zarr_in_action/610_s2_s3_fusion.ipynb)
 
 
 <h2>💡 How best to use EOPF 101 </h2>
@@ -97,7 +101,7 @@ And select **Start**.
 
 <h2>📢 How to get involved </h2>
 
-EOPF 101 is an open community resource under active development. Our activities are designed to engage with **Sentinel users** and to gather feedback on **EOPF Sentinel Zarr** products. 
+EOPF 101 is an open community resource under active development. Our activities are designed to engage with **Sentinel users** and to gather feedback on **EOPF Sentinel Zarr** products.
 There are different ways you can get involved and engaged:
 
 <h3> Join the EOPF Toolkit Notebook Competition </h3>
@@ -129,7 +133,7 @@ A panel of expert judges will evaluate each submission based on technical soundn
 
 The competition culminates in an online awards taking during April 2026! Winners and highly commended entries will be announced.<br>
 
-The top notebooks will be featured in the **EOPF 101** as new case studies and you will be given the chance to be a co-author of a publication on **EOPF 101**. 
+The top notebooks will be featured in the **EOPF 101** as new case studies and you will be given the chance to be a co-author of a publication on **EOPF 101**.
 
 For futher details, please visit the [notebook competition repository](https://github.com/eopf-toolkit/community-notebook-competition)!
 
@@ -138,13 +142,9 @@ Is there a plugin or library missing that you would like to see integrated? Do y
 
 
 <h2>About the ESA EOPF Toolkit project </h2>
-EOPF 101 is a community resource developed as part of the [EOPF Toolkit project](https://github.com/eopf-toolkit) funded by the [European Space Agency](https://www.esa.int/). 
+EOPF 101 is a community resource developed as part of the [EOPF Toolkit project](https://github.com/eopf-toolkit) funded by the [European Space Agency](https://www.esa.int/).
 EOPF 101 is brought to you by [Development Seed](https://developmentseed.org/), [thriveGEO](https://www.thrivegeo.com) and [SparkGeo](https://sparkgeo.com/).
 <br>
 
 <p align="center"><img title="EOPF Toolkit Logo" alt="Alt text" src="/img/EOPF_FINAL_LOGO.png" class="center" width=40%></p>
 <p align="center"><img title="Consortium logos" alt="Alt text" src="/img/logos.png" class="center" width=80%></p>
-
-
-
-
