@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-66c9649715f74f1e4324758aa2390964.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-36bf55b16c7cb4b1420f41495cb5446a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -320,7 +320,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_zarr_tools/60_eopf_zarr_julia.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access Zarr Data with Julia</span></a>
+  <a href="./05_zarr_tools/510_eopf_zarr_julia.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access Zarr Data with Julia</span></a>
   </div>
 </li>
       </ul>
@@ -474,13 +474,13 @@ Your community guide for working with EOPF Sentinel Zarr data in the cloud
 <p>EOPF 101 is designed for Sentinel data users who are new to cloud-optimised geospatial formats and cloud-based workflows. It introduces you to fundamental cloud-native geospatial concepts, the Earth Observation Processing Framework (EOPF) activities by ESA, re-processed EOPF Sentinel Zarr data, as well as tools and libraries to work with EOPF Sentinel Zarr data in the cloud.</p>
 <p>Across six chapters, EOPF 101 gradually introduces you to the EOPF Sentinel Zarr products, how you can search and access these, relevant tools and plugins to use EOPF Sentinel Zarr data in different working environments, as well as practical end-to-end application workflows highlighting the benefits of EOPF Sentinel Zarr data.</p>
 <ul>
-<li><strong>Chapter 1 - About EOPF</strong>
+<li><p><strong>Chapter 1 - About EOPF</strong></p>
 <ul>
 <li><a href="./01_about_eopf/11_about_eopf.html">Introduction to the EOPF</a></li>
 <li><a href="./01_about_eopf/12_about_cloudoptimized_formats.html">About Cloud-Optimised Formats</a></li>
 <li><a href="./01_about_eopf/13_overview_eopf_datasets.html">EOPF Sentinel Zarr products</a></li>
 </ul></li>
-<li><strong>Chapter 2 - About EOPF Zarr</strong>
+<li><p><strong>Chapter 2 - About EOPF Zarr</strong></p>
 <ul>
 <li><a href="./02_about_eopf_zarr/21_what_is_zarr.html">Overview of the EOPF Zarr format</a></li>
 <li><a href="./02_about_eopf_zarr/22_zarr_structure_S1GRD.html">Discover EOPF Zarr - Sentinel-1 GRD</a></li>
@@ -488,20 +488,24 @@ Your community guide for working with EOPF Sentinel Zarr data in the cloud
 <li><a href="./02_about_eopf_zarr/24_zarr_struct_S2L2A.html">Discover EOPF Zarr - Sentinel-2 L2A</a></li>
 <li><a href="./02_about_eopf_zarr/25_zarr_struct_S3.html">Discover EOPF Zarr - Sentinel-3 SLSTR Level-2 LST</a></li>
 </ul></li>
-<li><strong>Chapter 3 - About Chunking</strong>
+<li><p><strong>Chapter 3 - About Chunking</strong></p>
 <ul>
 <li><a href="./03_about_chunking/31_zarr_chunking_intro.html">An introduction to Chunking</a></li>
 <li><a href="./03_about_chunking/32_zarr_chunking_strat.html">Best practices and Chunking optimisation in EOPF</a></li>
 </ul></li>
-<li><strong>Chapter 4 - EOPF and STAC</strong>
+<li><p><strong>Chapter 4 - EOPF and STAC</strong></p>
 <ul>
 <li><a href="./04_eopf_and_stac/41_stac_intro.html">Introduction to STAC</a></li>
 <li><a href="./04_eopf_and_stac/42_eopf_stac_zarr_tutorial.html">Explore the web interface of the EOPF Zarr STAC Catalog</a></li>
 <li><a href="./04_eopf_and_stac/43_eopf_stac_connection.html">Access the EOPF Zarr STAC API with Python</a></li>
 <li><a href="./04_eopf_and_stac/44_eopf_stac_xarray_tutorial.html">From STAC to Data: Accessing EOPF Zarr with xarray</a></li>
 </ul></li>
-<li><strong>Chapter 5 - Tools to work with EOPF Zarr</strong>
+<li><p><strong>Chapter 5 - Tools to work with EOPF Zarr</strong></p>
 <ul>
+<li>Python
+<ul>
+<li><a href="./05_zarr_tools/59_rio_tiler_chunks_and_tiles.html">EOPF Zarr + Rio-tiler Fundamentals with Sentinel-2</a></li>
+</ul></li>
 <li>R
 <ul>
 <li><a href="./05_zarr_tools/51_eopf_stac_r.html">Access the EOPF Zarr STAC API with R</a></li>
@@ -512,12 +516,16 @@ Your community guide for working with EOPF Sentinel Zarr data in the cloud
 <li><a href="./05_zarr_tools/57_zarr_R_gdal.html">Access EOPF Sentinel Zarr via GDAL in <code>stars</code> and <code>terra</code></a></li>
 <li><a href="./05_zarr_tools/58_rstac_gdalcubes.html">Creating a raster cube from STAC items of the EOPF Sentinel Zarr Samples Service using <code>rstac</code> and `gdalcubes</a></li>
 </ul></li>
+<li>Julia
+<ul>
+<li><a href="./05_zarr_tools/510_eopf_zarr_julia.html">Access Zarr Data with Julia</a></li>
+</ul></li>
 <li>Qgis
 <ul>
 <li><a href="./05_zarr_tools/52_eopf_stac_qgis.html">Access EOPF Zarr in QGIS Using STAC</a></li>
 </ul></li>
 </ul></li>
-<li><strong>Chapter 6 - EOPF Zarr in Action</strong>
+<li><p><strong>Chapter 6 - EOPF Zarr in Action</strong></p>
 <ul>
 <li><a href="./06_eopf_zarr_in_action/64_flood_mapping_valencia.html">Flood Mapping - Time Series Analysis in Valencia</a></li>
 <li><a href="./06_eopf_zarr_in_action/69_coastal_water_dynamics_s1.html">Surface Water Dynamics - Time Series Analysis with Sentinel-1</a></li>
@@ -534,13 +542,18 @@ Your community guide for working with EOPF Sentinel Zarr data in the cloud
 </ul></li>
 <li><a href="./06_eopf_zarr_in_action/67_reservoir_surface_monitoring.html">Reservoir Surface Monitoring</a></li>
 <li><a href="./06_eopf_zarr_in_action/68_vegetation_anomalies.html">Analysing Forest Vegetation Anomalies</a></li>
-<li><a href="./06_eopf_zarr_in_action/610_s2_s3_fusion.html">African rangeland monitoring with Sentinel-2 and Sentinel-3</a></li>
+<li><a href="./06_eopf_zarr_in_action/610_s2_s3_fusion.html">African rangeland monitoring with Sentinel-2 and Sentinel-3</a> &lt;!– * <a href="./06_eopf_zarr_in_action/611_intertidal_vegetation_monitoring_with_s2.ipynb">Cloud-Native Intertidal Vegetation Monitoring with Sentinel-2 and EOPF Zarr</a></li>
+<li><a href="./06_eopf_zarr_in_action/612_cloud_probability_s2.ipynb">Cloud Probability Analysis with EOPF Sentinel-2 Data</a></li>
+<li><a href="./06_eopf_zarr_in_action/613_computing_lai_s2.ipynb">Computing Leaf Area Index Using Sentinel-2 Data</a><br>
+</li>
+<li><a href="./06_eopf_zarr_in_action/614_flood_change_detection_s1.ipynb">Sentinel-1 SAR Flood Detection and Mapping Using Change Detection</a></li>
+<li><a href="./06_eopf_zarr_in_action/615_vad_ppi.ipynb">Vegetation Productivity and Drought Monitoring in the Horn of Africa Using PPI, fPAR, and EOPF Zarr</a> –&gt;</li>
 </ul></li>
 </ul>
 <h2 class="anchored">
 💡 How best to use EOPF 101
 </h2>
-<p>You can use EOPF 101 as a reference online resource to get example code and workflows for working with Zarr data, the EOPF STAC Catalogue, and different libraries and plugins facilitating the use of <strong>EOPF Sentinel Zarr</strong> data.</p>
+<p>You can use EOPF 101 as a reference online resource to get started, example code and workflows for working with Zarr data, the <a href="https://stac.browser.user.eopf.eodc.eu/?.language=en">EOPF STAC Catalogue</a>, and different libraries and plugins facilitating the use of <strong>EOPF Sentinel Zarr</strong> data.</p>
 <p>If you would like to execute the notebooks through the <strong>JupyterHub</strong>, simply follow the <strong>Launch Button</strong> available in all the executable notebooks:</p>
 <p align="center">
 <img title="Launch the Jupyter Notebook" alt="Alt text" src="./img/launch_button.png" width="60%" class="center">
@@ -562,40 +575,25 @@ Your community guide for working with EOPF Sentinel Zarr data in the cloud
 </ul>
 <p>And select <strong>Start</strong>.</p>
 <h2 class="anchored">
-📢 How to get involved
+📢 Stay Involved!
 </h2>
-<p>EOPF 101 is an open community resource under active development. Our activities are designed to engage with <strong>Sentinel users</strong> and to gather feedback on <strong>EOPF Sentinel Zarr</strong> products. There are different ways you can get involved and engaged:</p>
+<p><strong>EOPF 101</strong> is a living, open-access resource designed for the Earth Observation (EO) community. While our initial launch events and competitions have concluded, the mission to refine EOPF Zarr products continues.</p>
+<p>There are several ways you can still leverage this work and contribute to the ecosystem:</p>
 <h3 class="anchored">
-Join the EOPF Toolkit Notebook Competition
+🚀 Explore the Competition Legacy
 </h3>
-<p>Get ready and participate in the EOPF Toolkit Notebook Competition! The competition will kick-off in October 2025 and run until March 2026. It is your chance to get hands-on with EOPF Zarr products, get expert input and guidance to show the community the great work you can do.</p>
-<h4 class="anchored">
-How to Participate?
-</h4>
-<h5 class="anchored">
-Step 1: Launch &amp; Registration
-</h5>
-<p>The competition officially begins with its launch at <a href="https://www.bigdatafromspace2025.org/">Big Data from Space 2025</a> on 30 September 2025. During this stage, you will be able to register <a href="https://thrivegeo.com/eopf-toolkit-competition/">your interest</a> to receive updates!<br></p>
-<h5 class="anchored">
-<p>Step 2: Learning &amp; Development</p>
-<p>Explore this resource and build your own notebook! The <a href="https://jupyterhub.user.eopf.eodc.eu/hub">EOPF Sentinel Zarr Sample Service JupyterLab</a> will be your primary development environment.<br> Once you access with your <a href="https://dataspace.copernicus.eu/">CDSE</a> credentials, you will get the chance to choose the language you want to develop with!</p>
-<p>To get some ideas on how to get started with your development, watch the introductory session <a href="https://www.youtube.com/watch?v=N7_C3rxjjp4">here</a>.</p>
-</h5><h5 class="anchored">
-Step 3: Notebook Submission
-</h5>
-<p>Submit your completed Jupyter Notebook via <a href="https://github.com/eopf-toolkit/community-notebook-competition/tree/main/submissions">GitHub</a> once complete, between 1 November 2025 and 15 March 2026 (23:59 UTC+1). Stay tuned!</p>
-<h5 class="anchored">
-Judging &amp; Evaluation
-</h5>
-<p>A panel of expert judges will evaluate each submission based on technical soundness, effective use of the EOPF Zarr data and plugins and educational quality.</p>
-<h5 class="anchored">
-Awards &amp; Showcase
-</h5>
-<p>The competition culminates in an online awards taking during April 2026! Winners and highly commended entries will be announced.<br></p>
-<p>The top notebooks will be featured in the <strong>EOPF 101</strong> as new case studies and you will be given the chance to be a co-author of a publication on <strong>EOPF 101</strong>.</p>
-<p>For futher details, please visit the <a href="https://github.com/eopf-toolkit/community-notebook-competition">notebook competition repository</a>!</p>
+<p><strong>The EOPF Toolkit Notebook Competition (2025–2026)</strong> brought together innovators from across the EO sector. You can now use the results of this competition as a starting point for your own research and explore the poer of Zarr.</p>
+<ul>
+<li><p>View the Winners: Browse the <a href="./06_eopf_zarr_in_action/64_flood_mapping_valencia.html">EOPF Zarr in Action Chapter</a> to see top-tier examples of EOPF Zarr integration.</p></li>
+<li><p>Study the Case Studies: <strong>Winning notebook</strong>s have been integrated into EOPF 101 as official case studies, providing proven workflows for complex data processing.</p></li>
+</ul>
 <h3 class="anchored">
-Ideas &amp; Feedback?
+🗺️ Meet the EOPF Sentinel Zarr Explorer
+</h3>
+<p>The <a href="https://explorer.eopf.copernicus.eu/">EOPF Explorer</a> drives the standardization of cloud-native geospatial data formats. Through intensive collaboration with the Zarr community, it looks forward to establishing foundational Zarr Conventions that enable interoperable access to Earth Observation data across the entire ecosystem.</p>
+<p>Follow the upcoming <a href="https://explorer.eopf.copernicus.eu/webinars-events/">Webinars and Events</a> the project is preparing for you!</p>
+<h3 class="anchored">
+💡 Ideas &amp; Feedback?
 </h3>
 <p>Is there a plugin or library missing that you would like to see integrated? Do you have feedback on EOPF 101? Please submit an <a href="https://github.com/eopf-toolkit/eopf-101/issues">issue</a> and we will review your request.</p>
 <h2 class="anchored">
@@ -603,10 +601,17 @@ About the ESA EOPF Toolkit project
 </h2>
 <p>EOPF 101 is a community resource developed as part of the <a href="https://github.com/eopf-toolkit">EOPF Toolkit project</a> funded by the <a href="https://www.esa.int/">European Space Agency</a>. EOPF 101 is brought to you by <a href="https://developmentseed.org/">Development Seed</a>, <a href="https://www.thrivegeo.com">thriveGEO</a> and <a href="https://sparkgeo.com/">SparkGeo</a>. <br></p>
 <p align="center">
+<b>Special Thanks</b> to <a href="https://github.com/ciaransweet"> <span class="citation" data-cites="ciaransweet">@ciaransweet</span> </a> for developing the pipeline and processes for this book!! 📕 🚀
+</p>
+<p><br></p>
+<p align="center">
 <img title="EOPF Toolkit Logo" alt="Alt text" src="./img/EOPF_FINAL_LOGO.png" class="center" width="40%">
 </p>
 <p align="center">
 <img title="Consortium logos" alt="Alt text" src="./img/logos.png" class="center" width="80%">
+</p>
+<p align="center">
+Open knowledge, freely shared <a href="https://github.com/eopf-toolkit/eopf-101/tree/main?tab=Apache-2.0-1-ov-file#readme"> Apache 2.0 </a>
 </p>
 
 

@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-66c9649715f74f1e4324758aa2390964.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-36bf55b16c7cb4b1420f41495cb5446a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -356,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../05_zarr_tools/60_eopf_zarr_julia.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access Zarr Data with Julia</span></a>
+  <a href="../05_zarr_tools/510_eopf_zarr_julia.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Access Zarr Data with Julia</span></a>
   </div>
 </li>
       </ul>
@@ -543,6 +543,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><a href="https://jupyterhub.user.eopf.eodc.eu/hub/user-redirect/git-pull?repo=https://github.com/eopf-toolkit/eopf-101&amp;branch=main&amp;urlpath=lab/tree/eopf-101/05_zarr_tools/58_rio_tiler_chunks_and_tiles.ipynb" target="_blank"> <button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;"> 🚀 Launch this notebook in JupyterLab </button> </a></p>
+<p><strong>By:</strong> <em><a href="https://github.com/emmanuelmathot"><span class="citation" data-cites="emmanuelmathot">@emmanuelmathot</span></a></em> and <em><a href="https://github.com/pantierra"><span class="citation" data-cites="pantierra">@pantierra</span></a></em> | <a href="https://developmentseed.org/">Development Seed</a></p>
+<p><strong>By:</strong> <em><a href="https://github.com/emmanuelmathot"><span class="citation" data-cites="emmanuelmathot">@emmanuelmathot</span></a></em> and <em><a href="https://github.com/pantierra"><span class="citation" data-cites="pantierra">@pantierra</span></a></em> | <a href="https://developmentseed.org/">Development Seed</a></p>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
 <p>This notebook demonstrates efficient tiling workflows with EOPF Zarr data using <strong>rio-tiler</strong> and <strong>rio-xarray</strong>. We’ll showcase how direct Zarr access with proper chunking delivers superior performance for web mapping and visualization tasks.</p>
@@ -573,7 +575,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="import-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="import-libraries">Import libraries</h3>
-<div id="7" class="cell" data-execution_count="1">
+<div id="9" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xarray <span class="im">as</span> xr</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -594,7 +596,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="connect-to-eopf-stac-catalog" class="level2">
 <h2 class="anchored" data-anchor-id="connect-to-eopf-stac-catalog">Connect to EOPF STAC Catalog</h2>
 <p>We will start by connecting to the <a href="https://stac.browser.user.eopf.eodc.eu/?.language=en">EOPF STAC catalog</a> and loading a Sentinel-2 L2A dataset with its native Zarr chunking configuration. We search for a cloud-free Sentinel-2 L2A scene over an area of interest, in this case Napoli, Italy.</p>
-<div id="9" class="cell" data-execution_count="2">
+<div id="11" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to EOPF STAC API</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>eopf_stac_api_root <span class="op">=</span> <span class="st">"https://stac.core.eopf.eodc.eu/"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> Client.<span class="bu">open</span>(url<span class="op">=</span>eopf_stac_api_root)</span>
@@ -636,7 +638,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="open-zarr-dataset-with-xarray" class="level3">
 <h3 class="anchored" data-anchor-id="open-zarr-dataset-with-xarray">Open Zarr Dataset with xarray</h3>
 <p>We’ll use xarray’s <code>open_datatree()</code> to access the hierarchical EOPF Zarr structure directly from cloud storage.</p>
-<div id="11" class="cell" data-execution_count="3">
+<div id="13" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get Zarr URL from STAC item</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>item_assets <span class="op">=</span> item.get_assets(media_type<span class="op">=</span>MediaType.ZARR)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>zarr_url <span class="op">=</span> item_assets[<span class="st">'product'</span>].href</span>
@@ -684,7 +686,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="explore-sentinel-2-band-structure">Explore Sentinel-2 Band Structure</h3>
 <p>Sentinel-2 L2A provides bands at three spatial resolutions: - <strong>10m</strong>: B02 (Blue), B03 (Green), B04 (Red), B08 (NIR) - <strong>20m</strong>: B05, B06, B07, B8A, B11, B12 - <strong>60m</strong>: B01, B09, B10</p>
 <p>Let’s examine the 10m resolution group, which we’ll use for RGB visualization.</p>
-<div id="13" class="cell" data-execution_count="4">
+<div id="15" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access 10m resolution bands</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ds_10m <span class="op">=</span> dt[<span class="st">'/measurements/reflectance/r10m'</span>].to_dataset()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -715,7 +717,7 @@ Coordinates: ['x', 'y']
 <section id="extract-and-set-crs-information" class="level3">
 <h3 class="anchored" data-anchor-id="extract-and-set-crs-information">Extract and Set CRS Information</h3>
 <p>EOPF Zarr stores CRS information in the root DataTree attributes under <code>other_metadata.horizontal_CRS_code</code>. We need to extract this and set it using rioxarray for rio-tiler compatibility.</p>
-<div id="15" class="cell" data-execution_count="5">
+<div id="17" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract CRS from EOPF metadata (following geozarr.py approach)</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>epsg_code_full <span class="op">=</span> dt.attrs.get(<span class="st">"other_metadata"</span>, {}).get(<span class="st">"horizontal_CRS_code"</span>, <span class="va">None</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -769,7 +771,7 @@ Coordinates: ['x', 'y']
 <section id="verify-geospatial-metadata" class="level3">
 <h3 class="anchored" data-anchor-id="verify-geospatial-metadata">Verify Geospatial Metadata</h3>
 <p>Now we can access CRS, bounds, and transform information through rioxarray. This is essential for rio-tiler integration.</p>
-<div id="17" class="cell" data-execution_count="6">
+<div id="19" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify CRS and geospatial metadata</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>crs <span class="op">=</span> ds_10m.rio.crs</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>bounds <span class="op">=</span> ds_10m.rio.bounds()</span>
@@ -804,7 +806,7 @@ Coordinates: ['x', 'y']
 <section id="prepare-dataarray-for-rio-tiler" class="level3">
 <h3 class="anchored" data-anchor-id="prepare-dataarray-for-rio-tiler">Prepare DataArray for Rio-tiler</h3>
 <p>Rio-tiler’s <code>XarrayReader</code> works with <strong>DataArrays</strong>, not Datasets. We need to stack our RGB bands into a single DataArray with a ‘band’ dimension.</p>
-<div id="20" class="cell" data-execution_count="7">
+<div id="22" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verify dataset is ready</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> ds_10m.rio.crs <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"CRS not set! Check previous steps."</span>)</span>
@@ -840,7 +842,7 @@ Coordinates: ['x', 'y']
 <section id="generate-true-color-rgb-tile" class="level3">
 <h3 class="anchored" data-anchor-id="generate-true-color-rgb-tile">Generate True Color RGB Tile</h3>
 <p>We’ll create a Web Mercator tile (zoom 12) showing true color composite (B04-Red, B03-Green, B02-Blue).</p>
-<div id="22" class="cell" data-execution_count="8">
+<div id="24" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create RGB composite using XarrayReader with our stacked DataArray</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> XarrayReader(rgb_bands) <span class="im">as</span> src:</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get dataset info</span></span>
@@ -881,7 +883,7 @@ Coordinates: ['x', 'y']
 <section id="visualize-true-color-composite" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-true-color-composite">Visualize True Color Composite</h3>
 <p>Let’s visualize the RGB composite with histogram stretching for better contrast.</p>
-<div id="24" class="cell" data-execution_count="9">
+<div id="26" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">10</span>))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(rgb_data.array.transpose(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sentinel-2 L2A True Color Composite (B04-B03-B02)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
@@ -906,7 +908,7 @@ Coordinates: ['x', 'y']
 <section id="visualize-chunk-grid-and-tile-requests" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-chunk-grid-and-tile-requests">Visualize Chunk Grid and Tile Requests</h3>
 <p>The key to understanding chunk performance is seeing <strong>where</strong> tiles land relative to chunk boundaries. For this, we can create a visualization to show the chunk grid overlaid on the actual data.</p>
-<div id="27" class="cell" data-execution_count="10">
+<div id="29" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a smaller test dataset for visualization</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First create a subset, then rechunk it to show visible chunk grid</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -965,7 +967,7 @@ Coordinates: ['x', 'y']
    New chunks: ((512, 512, 512, 512), (512, 512, 512, 512))
    Bounds: (399960.0, 4579540.0, 420440.0, 4600020.0)
 
-⏱️ Loaded subset into memory in 0.75s (~128.0 MB total across all variables above) — one remote read for Section 3–4
+⏱️ Loaded subset into memory in 0.60s (~128.0 MB total across all variables above) — one remote read for Section 3–4
 
 🧩 Chunk Structure:
    Chunk size: 512×512 pixels
@@ -975,7 +977,7 @@ Coordinates: ['x', 'y']
 Note: We rechunked to 512×512 to create a visible grid for demonstration.</code></pre>
 </div>
 </div>
-<div id="28" class="cell" data-execution_count="11">
+<div id="30" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zarr_tiling_utils <span class="im">import</span> visualize_chunks_and_tiles</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize with test dataset (now properly rechunked to 512×512)</span></span>
@@ -1010,7 +1012,7 @@ T4       2                  Y:2-2, X:2-3</code></pre>
 <h3 class="anchored" data-anchor-id="compare-chunking-strategies">Compare Chunking Strategies</h3>
 <p>By creating datasets with different chunking strategies, we can compare among different tile access patterns. We assume the requested tiles CRS are aligned with the dataset CRS.</p>
 <p>We’ll test the following scenarios: 1. <strong>Aligned</strong>: Chunks match tile size (256x256) 2. <strong>Larger</strong>: Chunks much larger than tiles (1024x1024) 3. <strong>Misaligned</strong>: Chunks don’t align with tiles (300x300) 4. <strong>Misaligned Large</strong>: Large chunks that don’t align with tiles (700x700) 5. <strong>Smaller</strong>: Chunks smaller than tiles (128x128) 6. <strong>Misaligned Small</strong>: Very small chunks that don’t align with tiles (100x100)</p>
-<div id="30" class="cell" data-execution_count="12">
+<div id="32" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Six chunking strategies on the in-memory subset (512×512 base grid)</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>strategies <span class="op">=</span> {</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Aligned (256x256)'</span>: {<span class="st">'chunks'</span>: {<span class="st">'y'</span>: <span class="dv">256</span>, <span class="st">'x'</span>: <span class="dv">256</span>}},</span>
@@ -1063,7 +1065,7 @@ Misaligned Small (100x100):
 <section id="visualize-chunking-strategy-comparison" class="level3">
 <h3 class="anchored" data-anchor-id="visualize-chunking-strategy-comparison">Visualize Chunking Strategy Comparison</h3>
 <p>Let’s visualize how a single tile request maps to chunks in each strategy:</p>
-<div id="32" class="cell" data-execution_count="13">
+<div id="34" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zarr_tiling_utils <span class="im">import</span> compare_chunking_strategies</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> compare_chunking_strategies(ds_variants, tile_size<span class="op">=</span><span class="dv">256</span>, tile_x<span class="op">=</span><span class="dv">512</span>, tile_y<span class="op">=</span><span class="dv">512</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1108,7 +1110,7 @@ Misaligned Small (100x100)     100×100      9            2.00 MB        2.75 MB
 <h2 class="anchored" data-anchor-id="rio-tiler-tile-serving-benchmark">Rio-tiler Tile Serving Benchmark</h2>
 <p>We <strong>measure</strong> how long rio-tiler takes to serve one tile for each chunking strategy using the real <code>XarrayReader.tile()</code> codepath.</p>
 <p>The subset above is <strong>already loaded into memory</strong>, so these timings reflect <strong>chunk layout vs.&nbsp;the tile window</strong> (slicing and rio-tiler resampling), not repeated HTTPS range reads from the Zarr store. Remote access costs are represented by the one-time load and by earlier cells that open the dataset.</p>
-<div id="34" class="cell" data-execution_count="14">
+<div id="36" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rasterio.warp <span class="im">import</span> transform_bounds</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zarr_tiling_utils <span class="im">import</span> benchmark_rio_tiler</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1138,15 +1140,15 @@ Misaligned Small (100x100)     100×100      9            2.00 MB        2.75 MB
 <span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:30s}</span><span class="ss">  </span><span class="sc">{</span>np<span class="sc">.</span>median(times)<span class="op">*</span><span class="dv">1000</span><span class="sc">:7.1f}</span><span class="ss"> ms (median of </span><span class="sc">{</span><span class="bu">len</span>(times)<span class="sc">}</span><span class="ss"> runs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>🎯 Benchmark tile: x=8825, y=6115, z=14
-Aligned (256x256)                  25.7 ms (median of 5 runs)
-Larger (1024x1024)                 32.9 ms (median of 5 runs)
-Misaligned (300x300)               27.1 ms (median of 5 runs)
-Misaligned (700x700)               26.1 ms (median of 5 runs)
-Smaller (128x128)                  32.2 ms (median of 5 runs)
-Misaligned Small (100x100)         36.5 ms (median of 5 runs)</code></pre>
+Aligned (256x256)                  23.5 ms (median of 5 runs)
+Larger (1024x1024)                 29.4 ms (median of 5 runs)
+Misaligned (300x300)               23.6 ms (median of 5 runs)
+Misaligned (700x700)               23.2 ms (median of 5 runs)
+Smaller (128x128)                  27.9 ms (median of 5 runs)
+Misaligned Small (100x100)         29.9 ms (median of 5 runs)</code></pre>
 </div>
 </div>
-<div id="35" class="cell" data-execution_count="15">
+<div id="37" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot benchmark results</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> <span class="bu">list</span>(results.keys())</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>medians <span class="op">=</span> [np.median(t) <span class="op">*</span> <span class="dv">1000</span> <span class="cf">for</span> t <span class="kw">in</span> results.values()]</span>
@@ -1171,7 +1173,7 @@ Misaligned Small (100x100)         36.5 ms (median of 5 runs)</code></pre>
 </div>
 </div>
 </div>
-<div id="36" class="cell" data-execution_count="16">
+<div id="38" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary table</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="op">=</span> np.median(results[names[<span class="dv">0</span>]])</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'Strategy'</span><span class="sc">:30s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Median (ms)'</span><span class="sc">:&gt;12s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Std (ms)'</span><span class="sc">:&gt;10s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'vs Baseline'</span><span class="sc">:&gt;12s}</span><span class="ss">"</span>)</span>
@@ -1182,12 +1184,12 @@ Misaligned Small (100x100)         36.5 ms (median of 5 runs)</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Strategy                        Median (ms)   Std (ms)  vs Baseline
 ──────────────────────────────────────────────────────────────────────
-Aligned (256x256)                      25.7        0.4        1.00x
-Larger (1024x1024)                     32.9        0.3        1.28x
-Misaligned (300x300)                   27.1        0.4        1.05x
-Misaligned (700x700)                   26.1        0.3        1.01x
-Smaller (128x128)                      32.2        0.6        1.25x
-Misaligned Small (100x100)             36.5        0.5        1.42x</code></pre>
+Aligned (256x256)                      23.5        0.2        1.00x
+Larger (1024x1024)                     29.4        0.3        1.25x
+Misaligned (300x300)                   23.6        0.4        1.00x
+Misaligned (700x700)                   23.2        1.0        0.99x
+Smaller (128x128)                      27.9        0.7        1.19x
+Misaligned Small (100x100)             29.9        0.2        1.27x</code></pre>
 </div>
 </div>
 <hr>
