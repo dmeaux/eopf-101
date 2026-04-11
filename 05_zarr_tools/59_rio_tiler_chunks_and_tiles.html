@@ -967,7 +967,7 @@ Coordinates: ['x', 'y']
    New chunks: ((512, 512, 512, 512), (512, 512, 512, 512))
    Bounds: (399960.0, 4579540.0, 420440.0, 4600020.0)
 
-⏱️ Loaded subset into memory in 0.60s (~128.0 MB total across all variables above) — one remote read for Section 3–4
+⏱️ Loaded subset into memory in 0.61s (~128.0 MB total across all variables above) — one remote read for Section 3–4
 
 🧩 Chunk Structure:
    Chunk size: 512×512 pixels
@@ -1140,12 +1140,12 @@ Misaligned Small (100x100)     100×100      9            2.00 MB        2.75 MB
 <span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:30s}</span><span class="ss">  </span><span class="sc">{</span>np<span class="sc">.</span>median(times)<span class="op">*</span><span class="dv">1000</span><span class="sc">:7.1f}</span><span class="ss"> ms (median of </span><span class="sc">{</span><span class="bu">len</span>(times)<span class="sc">}</span><span class="ss"> runs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>🎯 Benchmark tile: x=8825, y=6115, z=14
-Aligned (256x256)                  23.5 ms (median of 5 runs)
-Larger (1024x1024)                 29.4 ms (median of 5 runs)
-Misaligned (300x300)               23.6 ms (median of 5 runs)
-Misaligned (700x700)               23.2 ms (median of 5 runs)
-Smaller (128x128)                  27.9 ms (median of 5 runs)
-Misaligned Small (100x100)         29.9 ms (median of 5 runs)</code></pre>
+Aligned (256x256)                  22.5 ms (median of 5 runs)
+Larger (1024x1024)                 29.3 ms (median of 5 runs)
+Misaligned (300x300)               24.1 ms (median of 5 runs)
+Misaligned (700x700)               23.9 ms (median of 5 runs)
+Smaller (128x128)                  26.9 ms (median of 5 runs)
+Misaligned Small (100x100)         30.9 ms (median of 5 runs)</code></pre>
 </div>
 </div>
 <div id="37" class="cell" data-execution_count="15">
@@ -1184,12 +1184,12 @@ Misaligned Small (100x100)         29.9 ms (median of 5 runs)</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Strategy                        Median (ms)   Std (ms)  vs Baseline
 ──────────────────────────────────────────────────────────────────────
-Aligned (256x256)                      23.5        0.2        1.00x
-Larger (1024x1024)                     29.4        0.3        1.25x
-Misaligned (300x300)                   23.6        0.4        1.00x
-Misaligned (700x700)                   23.2        1.0        0.99x
-Smaller (128x128)                      27.9        0.7        1.19x
-Misaligned Small (100x100)             29.9        0.2        1.27x</code></pre>
+Aligned (256x256)                      22.5        0.3        1.00x
+Larger (1024x1024)                     29.3        0.2        1.30x
+Misaligned (300x300)                   24.1        0.9        1.07x
+Misaligned (700x700)                   23.9        0.2        1.06x
+Smaller (128x128)                      26.9        0.9        1.20x
+Misaligned Small (100x100)             30.9        0.2        1.37x</code></pre>
 </div>
 </div>
 <hr>
