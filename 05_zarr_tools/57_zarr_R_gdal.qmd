@@ -7,6 +7,21 @@ execute:
 
 **By:** *[@joheisig](https://github.com/joheisig)* | [Institut für Geoinformatik](https://www.uni-muenster.de/Geoinformatics/)
 
+```{r setup, echo = FALSE}
+link_start <- "https://jupyterhub.user.eopf.eodc.eu/hub/login?next=%2Fhub%2Fspawn%3Fnext%3D%252Fhub%252Fuser-redirect%252Fgit-pull%253Frepo%253Dhttps%253A%252F%252Fgithub.com%252Feopf-toolkit%252Feopf-101%2526branch%253Dmain%2526urlpath%253Dlab%252Ftree%252Feopf-101%252F"
+folder <- "05_zarr_tools"
+separator <- "%252F"
+file <- "57_zarr_R_gdal.ipynb"
+link_end <- "%23fancy-forms-config=%7B%22profile%22%3A%22choose-your-environment%22%2C%22image%22%3A%22unlisted_choice%22%2C%22image%3Aunlisted_choice%22%3A%224zm3809f.c1.de1.container-registry.ovh.net%2Feopf-toolkit-r%2Feopf-toolkit-r%3Alatest%22%2C%22autoStart%22%3A%22true%22%7D"
+
+jupyterlab_link <- paste0(link_start, folder, separator, file, link_end)
+```
+
+<a href="`r jupyterlab_link`" target="_blank">
+<button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;">
+🚀 Launch this notebook in JupyterLab
+</button>
+</a>
 
 ### Introduction
 
@@ -32,10 +47,7 @@ zarr_url = "https://objects.eodc.eu/e05ab01a9d56408d82ac32d69a5aae2a:sample-data
 
 ### Import packages
 
-```{r}
-#| message: false
-#| warning: false
-
+```{r, message = FALSE, warning = FALSE}
 library(stars)     # reading; imports sf too
 library(terra)     # reading
 library(jsonlite)  # parsing metadata
@@ -67,9 +79,7 @@ names(metadata)
 
 ::: {.callout-tip collapse="true"}
 ## Expand for full GDAL MDIM metadata output
-```{r}
-#| echo: false
-
+```{r, echo = FALSE}
 print(metadata)
 ```
 :::
@@ -84,30 +94,25 @@ Successful attempts are marked with a ✅, failed attempts with a ⛔.
 
 First we define the path to a specific data array (band 1, 60 meter resolution) inside the Zarr store which can be understood as a single raster layer.
 
-```{r, error=T}
+```{r, error = TRUE}
 band_variable = "/measurements/reflectance/r60m/b01"
 ```
 
 ### `stars::read_stars()`
 
 ⛔ Traditional approach for reading all bands/layers and specifying a driver.
-```{r}
-#| error: true
+```{r, error = TRUE}
 
 r = read_stars(vsi_url, driver = "ZARR")
 ```
 
 ⛔ Traditional approach for reading all bands/layers and specifying a sub-dataset (integer).
-```{r}
-#| error: true
-
+```{r, error = TRUE}
 r = read_stars(vsi_url, sub = 1)
 ```
 
 ⛔ Traditional approach for reading all bands/layers and specifying a sub-dataset (path).
-```{r}
-#| error: true
-
+```{r, error = TRUE}
 r = read_stars(vsi_url, sub = band_variable)
 ```
 
@@ -138,10 +143,7 @@ system.time(plot(r, axes = TRUE))
 
 ... or is an interactive visualization:
 
-```{r}
-#| message: false
-#| echo: false
-
+```{r, message = FALSE, echo = FALSE}
 mapviewOptions(basemaps = c("OpenTopoMap","Esri.WorldImagery", 
                             "CartoDB.Positron"))
 ```
@@ -155,9 +157,7 @@ mapview(r)
 ### `stars::read_mdim()`
 
 ⛔ Traditional approach for reading all bands/layers at once. "?" should return a list of array possible names.
-```{r}
-#| error: true
-
+```{r, error = TRUE}
 m = read_mdim(vsi_url)
 m = read_mdim(vsi_url, variable = "?") # query array names
 ```
@@ -181,7 +181,7 @@ As for `read_stars()`, the CRS is not automatically recognized and needs to be s
 
 ⛔ Traditional approach for reading all bands/layers at once.
 
-```{r, error=T}
+```{r, error = TRUE}
 (tr = terra::rast(vsi_url))
 tr$b02
 
@@ -224,4 +224,4 @@ In this notebook we have demonstrated how to access remote Zarr stores using GDA
 
 ## What's next?
 
-In the following [notebook](./58_rstac_gdalcubes.qmd), we will explore how to create a data cube from STAC items of the [EOPF STAC Catalog](https://stac.browser.user.eopf.eodc.eu/?.language=en) using the `rstac` and `gdalcubes` packages in R.
+Explore [this related notebook](./56_zarr_R_rarr.qmd) which demonstrates how to access the same Zarr data using the `Rarr` package and building a `stars` object from it.
