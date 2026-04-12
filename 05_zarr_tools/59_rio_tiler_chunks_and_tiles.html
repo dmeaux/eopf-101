@@ -460,6 +460,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="../06_eopf_zarr_in_action/610_s2_s3_fusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">African rangeland monitoring with Sentinel-2 and Sentinel-3</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_eopf_zarr_in_action/611_intertidal_vegetation_monitoring_with_s2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cloud-Native Intertidal Vegetation Monitoring with Sentinel-2 and EOPF Zarr</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_eopf_zarr_in_action/614_flood_change_detection_s1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sentinel-1 SAR Flood Detection and Mapping Using Change Detection</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -631,8 +641,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📦 Found item: </span><span class="sc">{</span>item<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"📅 Acquisition date: </span><span class="sc">{</span>item<span class="sc">.</span>properties<span class="sc">.</span>get(<span class="st">'datetime'</span>, <span class="st">'N/A'</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>📦 Found item: S2B_MSIL2A_20260409T100029_N0512_R122_T33TVF_20260409T135035
-📅 Acquisition date: 2026-04-09T10:00:29.024000Z</code></pre>
+<pre><code>📦 Found item: S2C_MSIL2A_20260411T095031_N0512_R079_T33TVF_20260411T132016
+📅 Acquisition date: 2026-04-11T09:50:31.025000Z</code></pre>
 </div>
 </div>
 <section id="open-zarr-dataset-with-xarray" class="level3">
@@ -657,7 +667,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dt[group].ds.data_vars:</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>group<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">list</span>(dt[group].ds.data_vars.keys())<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>🌐 Zarr URL: https://objects.eodc.eu/e05ab01a9d56408d82ac32d69a5aae2a:202604-s02msil2a-eu/09/products/cpm_v270/S2B_MSIL2A_20260409T100029_N0512_R122_T33TVF_20260409T135035.zarr
+<pre><code>🌐 Zarr URL: https://objects.eodc.eu/e05ab01a9d56408d82ac32d69a5aae2a:202604-s02msil2a-eu/11/products/cpm_v270/S2C_MSIL2A_20260411T095031_N0512_R079_T33TVF_20260411T132016.zarr
 
 📂 Available groups in DataTree:
   /conditions/geometry: ['mean_sun_angles', 'mean_viewing_incidence_angles', 'sun_angles', 'viewing_incidence_angles']
@@ -967,7 +977,7 @@ Coordinates: ['x', 'y']
    New chunks: ((512, 512, 512, 512), (512, 512, 512, 512))
    Bounds: (399960.0, 4579540.0, 420440.0, 4600020.0)
 
-⏱️ Loaded subset into memory in 0.61s (~128.0 MB total across all variables above) — one remote read for Section 3–4
+⏱️ Loaded subset into memory in 0.97s (~128.0 MB total across all variables above) — one remote read for Section 3–4
 
 🧩 Chunk Structure:
    Chunk size: 512×512 pixels
@@ -1140,12 +1150,12 @@ Misaligned Small (100x100)     100×100      9            2.00 MB        2.75 MB
 <span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>name<span class="sc">:30s}</span><span class="ss">  </span><span class="sc">{</span>np<span class="sc">.</span>median(times)<span class="op">*</span><span class="dv">1000</span><span class="sc">:7.1f}</span><span class="ss"> ms (median of </span><span class="sc">{</span><span class="bu">len</span>(times)<span class="sc">}</span><span class="ss"> runs)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>🎯 Benchmark tile: x=8825, y=6115, z=14
-Aligned (256x256)                  22.5 ms (median of 5 runs)
-Larger (1024x1024)                 29.3 ms (median of 5 runs)
-Misaligned (300x300)               24.1 ms (median of 5 runs)
-Misaligned (700x700)               23.9 ms (median of 5 runs)
-Smaller (128x128)                  26.9 ms (median of 5 runs)
-Misaligned Small (100x100)         30.9 ms (median of 5 runs)</code></pre>
+Aligned (256x256)                  22.4 ms (median of 5 runs)
+Larger (1024x1024)                 29.4 ms (median of 5 runs)
+Misaligned (300x300)               23.3 ms (median of 5 runs)
+Misaligned (700x700)               22.6 ms (median of 5 runs)
+Smaller (128x128)                  26.5 ms (median of 5 runs)
+Misaligned Small (100x100)         30.4 ms (median of 5 runs)</code></pre>
 </div>
 </div>
 <div id="37" class="cell" data-execution_count="15">
@@ -1184,12 +1194,12 @@ Misaligned Small (100x100)         30.9 ms (median of 5 runs)</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Strategy                        Median (ms)   Std (ms)  vs Baseline
 ──────────────────────────────────────────────────────────────────────
-Aligned (256x256)                      22.5        0.3        1.00x
-Larger (1024x1024)                     29.3        0.2        1.30x
-Misaligned (300x300)                   24.1        0.9        1.07x
-Misaligned (700x700)                   23.9        0.2        1.06x
-Smaller (128x128)                      26.9        0.9        1.20x
-Misaligned Small (100x100)             30.9        0.2        1.37x</code></pre>
+Aligned (256x256)                      22.4        0.3        1.00x
+Larger (1024x1024)                     29.4        0.5        1.31x
+Misaligned (300x300)                   23.3        0.2        1.04x
+Misaligned (700x700)                   22.6        0.3        1.01x
+Smaller (128x128)                      26.5        0.1        1.18x
+Misaligned Small (100x100)             30.4        0.2        1.36x</code></pre>
 </div>
 </div>
 <hr>
