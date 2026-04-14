@@ -473,6 +473,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="../06_eopf_zarr_in_action/614_flood_change_detection_s1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sentinel-1 SAR Flood Detection and Mapping Using Change Detection</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_eopf_zarr_in_action/615_vad_ppi.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vegetation Productivity and Drought Monitoring in the Horn of Africa Using PPI, fPAR, and EOPF Zarr</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item">
@@ -541,7 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><a href="https://jupyterhub.user.eopf.eodc.eu/hub/login?next=%2Fhub%2Fspawn%3Fnext%3D%252Fhub%252Fuser-redirect%252Fgit-pull%253Frepo%253Dhttps%253A%252F%252Fgithub.com%252Feopf-toolkit%252Feopf-101%2526branch%253Dmain%2526urlpath%253Dlab%252Ftree%252Feopf-101%252F04_eopf_and_stac%252F43_eopf_stac_connection.ipynb%23fancy-forms-config=%7B%22profile%22%3A%22choose-your-environment%22%2C%22image%22%3A%22unlisted_choice%22%2C%22image%3Aunlisted_choice%22%3A%224zm3809f.c1.de1.container-registry.ovh.net%2Feopf-toolkit-python%2Feopf-toolkit-python%3Alatest%22%2C%22autoStart%22%3A%22true%22%7D" target="_blank"> <button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;"> 🚀 Launch this notebook in JupyterLab </button> </a></p>
+<p><a href="https://jupyterhub.user.eopf.eodc.eu/hub/login?next=%2Fhub%2Fspawn%3Fnext%3D%252Fhub%252Fuser-redirect%252Fgit-pull%253Frepo%253Dhttps%253A%252F%252Fgithub.com%252Feopf-toolkit%252Feopf-101%2526branch%253Dmain%2526urlpath%253Dlab%252Ftree%252Feopf-101%252F04_eopf_and_stac%252F43_eopf_stac_connection.ipynb%23fancy-forms-config=%7B%22profile%22%3A%22choose-your-environment%22%2C%22image%22%3A%22unlisted_choice%22%2C%22image%3Aunlisted_choice%22%3A%22ghcr.io%2Feopf-toolkit%2Feopf-toolkit-python%3Alatest%22%2C%22autoStart%22%3A%22true%22%7D" target="_blank"> <button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;"> 🚀 Launch this notebook in JupyterLab </button> </a></p>
 <p><strong>By:</strong> <em><a href="https://github.com/gisromerocandanedo"><span class="citation" data-cites="gisromerocandanedo">@gisromerocandanedo</span></a></em> | <a href="https://thrivegeo.com/">thriveGEO</a></p>
 <p><strong>By:</strong> <em><a href="https://github.com/gisromerocandanedo"><span class="citation" data-cites="gisromerocandanedo">@gisromerocandanedo</span></a></em> | <a href="https://thrivegeo.com/">thriveGEO</a></p>
 <section id="introduction" class="level3">
@@ -1203,57 +1208,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                 
         <li class="pystac-row">
             <span class="pystac-k">href</span>
-            <span class="pystac-v">"https://stac.core.eopf.eodc.eu/collections/sentinel-1-l2-ocn"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">type</span>
-            <span class="pystac-v">"application/json"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">title</span>
-            <span class="pystac-v">"Sentinel-1 Level-2 OCN"</span>
-        </li>
-    
-            
-        
-    </ul>
-        </details></li>
-    
-            
-        
-    </ul>
-        
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">10</span></summary>
-            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">rel</span>
-            <span class="pystac-v">"child"</span>
-        </li>
-    
-            
-        
-            
-                
-        <li class="pystac-row">
-            <span class="pystac-k">href</span>
             <span class="pystac-v">"https://stac.core.eopf.eodc.eu/collections/sentinel-1-l1-slc"</span>
         </li>
     
@@ -1289,7 +1243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
         <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">11</span></summary>
+            <summary class="pystac-summary"><span class="pystac-k">10</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
             
@@ -1340,7 +1294,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             
                 
         <li><details>
-            <summary class="pystac-summary"><span class="pystac-k">12</span></summary>
+            <summary class="pystac-summary"><span class="pystac-k">11</span></summary>
             <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
         
             
@@ -1375,6 +1329,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="pystac-row">
             <span class="pystac-k">title</span>
             <span class="pystac-v">"Sentinel-3 SLSTR Level-2 LST"</span>
+        </li>
+    
+            
+        
+    </ul>
+        </details></li>
+    
+            
+        
+    </ul>
+        
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li><details>
+            <summary class="pystac-summary"><span class="pystac-k">12</span></summary>
+            <ul style="margin: 0px; padding: 0px 0px 0px 1.75em; list-style: none; display: block;">
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">rel</span>
+            <span class="pystac-v">"child"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">href</span>
+            <span class="pystac-v">"https://stac.core.eopf.eodc.eu/collections/sentinel-1-l2-ocn"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">type</span>
+            <span class="pystac-v">"application/json"</span>
+        </li>
+    
+            
+        
+            
+                
+        <li class="pystac-row">
+            <span class="pystac-k">title</span>
+            <span class="pystac-v">"Sentinel-1 Level-2 OCN"</span>
         </li>
     
             
@@ -2111,10 +2116,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>sentinel-2-l2a
 sentinel-1-l1-grd
-sentinel-1-l2-ocn
 sentinel-1-l1-slc
 sentinel-3-olci-l1-efr
 sentinel-3-slstr-l2-lst
+sentinel-1-l2-ocn
 sentinel-3-olci-l2-lfr
 sentinel-3-slstr-l1-rbt
 sentinel-3-olci-l1-err
@@ -2155,7 +2160,7 @@ Available Links:  [&lt;Link rel=items target=https://stac.core.eopf.eodc.eu/coll
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Search Results:"</span>)</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total Items Found for Sentinel-2 L-2A between May 1, 2020, and May 31, 2023:  '</span>,<span class="bu">len</span>(time_items[<span class="dv">0</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;pystac_client.item_search.ItemSearch object at 0x7efe513ab020&gt;
+<pre><code>&lt;pystac_client.item_search.ItemSearch object at 0x7f517101a3f0&gt;
 Search Results:
 Total Items Found for Sentinel-2 L-2A between May 1, 2020, and May 31, 2023:   1838</code></pre>
 </div>
@@ -2181,7 +2186,7 @@ Total Items Found for Sentinel-2 L-2A between May 1, 2020, and May 31, 2023:   1
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total Items Found:  '</span>,<span class="bu">len</span>(innsbruck_sets[<span class="dv">0</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Search Result:
-Total Items Found:   170</code></pre>
+Total Items Found:   172</code></pre>
 </div>
 </div>
 </section>
