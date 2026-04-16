@@ -491,11 +491,6 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../06_eopf_zarr_in_action/611_intertidal_vegetation_monitoring_with_s2.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Cloud-Native Intertidal Vegetation Monitoring with Sentinel-2 and EOPF Zarr</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../06_eopf_zarr_in_action/614_flood_change_detection_s1.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Sentinel-1 SAR Flood Detection and Mapping Using Change Detection</span></a>
   </div>
 </li>
@@ -583,7 +578,7 @@ window.Quarto = {
 </header>
 
 
-<p><a href="https://jupyterhub.user.eopf.eodc.eu/hub/user-redirect/git-pull?repo=https://github.com/eopf-toolkit/eopf-101&amp;branch=main&amp;urlpath=lab/tree/eopf-101/06_eopf_zarr_in_action/615_vad_ppi.ipynb" target="_blank"> <button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;"> 🚀 Launch this notebook in JupyterLab </button> </a></p>
+<p><a href="https://jupyterhub.user.eopf.eodc.eu/hub/login?next=/hub/spawn?next=/hub/user-redirect/git-pull?repo=https://github.com/eopf-toolkit/eopf-101&amp;branch=main&amp;urlpath=lab/tree/eopf-101/06_eopf_zarr_in_action/615_vad_ppi.ipynb#fancy-forms-config={&quot;profile&quot;:&quot;choose-your-environment&quot;,&quot;image&quot;:&quot;unlisted_choice&quot;,&quot;image:unlisted_choice&quot;:&quot;ghcr.io/eopf-toolkit/eopf-toolkit-python:latest&quot;,&quot;autoStart&quot;:&quot;true&quot;}" target="_blank"> <button style="background-color:#0072ce; color:white; padding:0.6em 1.2em; font-size:1rem; border:none; border-radius:6px; margin-top:1em;"> 🚀 Launch this notebook in JupyterLab </button> </a></p>
 <p><strong>By:</strong> <em><a href="https://github.com/limoezra"><span class="citation" data-cites="limoezra">@limoezra</span></a></em> | ICPAC, IGAD Climate Prediction and Applications Centre</p>
 <section id="introduction" class="level3">
 <h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
@@ -1372,12 +1367,12 @@ PPI mean  : 0.842</code></pre>
 <pre><code>Pass 2: Computing NDVI, fPAR, and PPI for each scene...
 
   [1/4] S2A_MSIL2A_20241201T075301_N0511_R135_T37NDJ_20241  (2024-12-01)
-    Reference AOI shape: (0, 0)</code></pre>
+    Reference AOI shape: (0, 0)
+    OK — valid: nan%, sun zenith: 33.8°
+  [2/4] S2A_MSIL2A_20241201T075301_N0511_R135_T37NCH_20241  (2024-12-01)</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    OK — valid: nan%, sun zenith: 33.8°
-  [2/4] S2A_MSIL2A_20241201T075301_N0511_R135_T37NCH_20241  (2024-12-01)
-    SKIPPED: shape mismatch (0, 1501) vs (0, 0) (different tile grid)
+<pre><code>    SKIPPED: shape mismatch (0, 1501) vs (0, 0) (different tile grid)
   [3/4] S2A_MSIL2A_20241201T075301_N0511_R135_T37NCG_20241  (2024-12-01)
     SKIPPED: shape mismatch (0, 1501) vs (0, 0) (different tile grid)
   [4/4] S2A_MSIL2A_20241201T075301_N0511_R135_T37NCF_20241  (2024-12-01)
